@@ -12,7 +12,19 @@
 		442D0FFA1DE2F3DA00CD0658 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FF81DE2F3DA00CD0658 /* Main.storyboard */; };
 		442D0FFC1DE2F3DA00CD0658 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FFB1DE2F3DA00CD0658 /* Assets.xcassets */; };
 		442D0FFF1DE2F3DA00CD0658 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FFD1DE2F3DA00CD0658 /* LaunchScreen.storyboard */; };
-		4445B93C1DE4698E00C1BBB5 /* LogedInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4445B93B1DE4698E00C1BBB5 /* LogedInViewController.m */; };
+		44BD0EEB1DEFDE0300D81758 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EEA1DEFDE0300D81758 /* LoginViewController.m */; };
+		44BD0EEE1DEFDE1900D81758 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EED1DEFDE1900D81758 /* RegisterViewController.m */; };
+		44BD0EF11DEFDE2B00D81758 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EF01DEFDE2B00D81758 /* HomeViewController.m */; };
+		44BD0EF41DEFDE3A00D81758 /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EF31DEFDE3A00D81758 /* EditProfileViewController.m */; };
+		44BD0EF71DEFDE4E00D81758 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EF61DEFDE4E00D81758 /* ChangePasswordViewController.m */; };
+		44BD0EFA1DEFDE6400D81758 /* CaseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EF91DEFDE6400D81758 /* CaseListViewController.m */; };
+		44BD0EFD1DEFDE7A00D81758 /* CaseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EFC1DEFDE7A00D81758 /* CaseDetailViewController.m */; };
+		44BD0F001DEFDE8C00D81758 /* AddCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EFF1DEFDE8C00D81758 /* AddCommentViewController.m */; };
+		44BD0F031DEFDE9800D81758 /* AddCaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F021DEFDE9800D81758 /* AddCaseViewController.m */; };
+		44BD0F061DEFDEB400D81758 /* ConfirmViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F051DEFDEB400D81758 /* ConfirmViewController.m */; };
+		44BD0F091DEFDED000D81758 /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F081DEFDED000D81758 /* RequestManager.m */; };
+		44BD0F0C1DEFDEDF00D81758 /* SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F0B1DEFDEDF00D81758 /* SidebarViewController.m */; };
+		44BD0F0F1DEFDEEC00D81758 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F0E1DEFDEEC00D81758 /* SWRevealViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,8 +36,32 @@
 		442D0FFB1DE2F3DA00CD0658 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		442D0FFE1DE2F3DA00CD0658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		442D10001DE2F3DA00CD0658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4445B93A1DE4698E00C1BBB5 /* LogedInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogedInViewController.h; sourceTree = "<group>"; };
-		4445B93B1DE4698E00C1BBB5 /* LogedInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogedInViewController.m; sourceTree = "<group>"; };
+		44BD0EE91DEFDDF600D81758 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		44BD0EEA1DEFDE0300D81758 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		44BD0EEC1DEFDE1100D81758 /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		44BD0EED1DEFDE1900D81758 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		44BD0EEF1DEFDE2400D81758 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		44BD0EF01DEFDE2B00D81758 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		44BD0EF21DEFDE3300D81758 /* EditProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditProfileViewController.h; sourceTree = "<group>"; };
+		44BD0EF31DEFDE3A00D81758 /* EditProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProfileViewController.m; sourceTree = "<group>"; };
+		44BD0EF51DEFDE4800D81758 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
+		44BD0EF61DEFDE4E00D81758 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
+		44BD0EF81DEFDE5B00D81758 /* CaseListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaseListViewController.h; sourceTree = "<group>"; };
+		44BD0EF91DEFDE6400D81758 /* CaseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaseListViewController.m; sourceTree = "<group>"; };
+		44BD0EFB1DEFDE6F00D81758 /* CaseDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaseDetailViewController.h; sourceTree = "<group>"; };
+		44BD0EFC1DEFDE7A00D81758 /* CaseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaseDetailViewController.m; sourceTree = "<group>"; };
+		44BD0EFE1DEFDE8200D81758 /* AddCommentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddCommentViewController.h; sourceTree = "<group>"; };
+		44BD0EFF1DEFDE8C00D81758 /* AddCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCommentViewController.m; sourceTree = "<group>"; };
+		44BD0F011DEFDE9200D81758 /* AddCaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddCaseViewController.h; sourceTree = "<group>"; };
+		44BD0F021DEFDE9800D81758 /* AddCaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCaseViewController.m; sourceTree = "<group>"; };
+		44BD0F041DEFDEAE00D81758 /* ConfirmViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmViewController.h; sourceTree = "<group>"; };
+		44BD0F051DEFDEB400D81758 /* ConfirmViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmViewController.m; sourceTree = "<group>"; };
+		44BD0F071DEFDECA00D81758 /* RequestManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RequestManager.h; sourceTree = "<group>"; };
+		44BD0F081DEFDED000D81758 /* RequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestManager.m; sourceTree = "<group>"; };
+		44BD0F0A1DEFDED900D81758 /* SidebarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SidebarViewController.h; sourceTree = "<group>"; };
+		44BD0F0B1DEFDEDF00D81758 /* SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarViewController.m; sourceTree = "<group>"; };
+		44BD0F0D1DEFDEE600D81758 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		44BD0F0E1DEFDEEC00D81758 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,11 +94,35 @@
 		442D0FEE1DE2F3DA00CD0658 /* Lawyer App */ = {
 			isa = PBXGroup;
 			children = (
+				44BD0F071DEFDECA00D81758 /* RequestManager.h */,
+				44BD0F081DEFDED000D81758 /* RequestManager.m */,
 				442D0FF21DE2F3DA00CD0658 /* AppDelegate.h */,
 				442D0FF31DE2F3DA00CD0658 /* AppDelegate.m */,
-				4445B93A1DE4698E00C1BBB5 /* LogedInViewController.h */,
-				4445B93B1DE4698E00C1BBB5 /* LogedInViewController.m */,
+				44BD0EE91DEFDDF600D81758 /* LoginViewController.h */,
+				44BD0EEA1DEFDE0300D81758 /* LoginViewController.m */,
+				44BD0EEC1DEFDE1100D81758 /* RegisterViewController.h */,
+				44BD0EED1DEFDE1900D81758 /* RegisterViewController.m */,
 				442D0FF81DE2F3DA00CD0658 /* Main.storyboard */,
+				44BD0F041DEFDEAE00D81758 /* ConfirmViewController.h */,
+				44BD0F051DEFDEB400D81758 /* ConfirmViewController.m */,
+				44BD0EEF1DEFDE2400D81758 /* HomeViewController.h */,
+				44BD0EF01DEFDE2B00D81758 /* HomeViewController.m */,
+				44BD0EF31DEFDE3A00D81758 /* EditProfileViewController.m */,
+				44BD0EF21DEFDE3300D81758 /* EditProfileViewController.h */,
+				44BD0EF51DEFDE4800D81758 /* ChangePasswordViewController.h */,
+				44BD0EF61DEFDE4E00D81758 /* ChangePasswordViewController.m */,
+				44BD0EF81DEFDE5B00D81758 /* CaseListViewController.h */,
+				44BD0EF91DEFDE6400D81758 /* CaseListViewController.m */,
+				44BD0EFB1DEFDE6F00D81758 /* CaseDetailViewController.h */,
+				44BD0EFC1DEFDE7A00D81758 /* CaseDetailViewController.m */,
+				44BD0EFE1DEFDE8200D81758 /* AddCommentViewController.h */,
+				44BD0EFF1DEFDE8C00D81758 /* AddCommentViewController.m */,
+				44BD0F011DEFDE9200D81758 /* AddCaseViewController.h */,
+				44BD0F021DEFDE9800D81758 /* AddCaseViewController.m */,
+				44BD0F0A1DEFDED900D81758 /* SidebarViewController.h */,
+				44BD0F0B1DEFDEDF00D81758 /* SidebarViewController.m */,
+				44BD0F0D1DEFDEE600D81758 /* SWRevealViewController.h */,
+				44BD0F0E1DEFDEEC00D81758 /* SWRevealViewController.m */,
 				442D0FFB1DE2F3DA00CD0658 /* Assets.xcassets */,
 				442D0FFD1DE2F3DA00CD0658 /* LaunchScreen.storyboard */,
 				442D10001DE2F3DA00CD0658 /* Info.plist */,
@@ -151,9 +211,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44BD0F0C1DEFDEDF00D81758 /* SidebarViewController.m in Sources */,
+				44BD0EEE1DEFDE1900D81758 /* RegisterViewController.m in Sources */,
+				44BD0EF71DEFDE4E00D81758 /* ChangePasswordViewController.m in Sources */,
+				44BD0F001DEFDE8C00D81758 /* AddCommentViewController.m in Sources */,
+				44BD0F091DEFDED000D81758 /* RequestManager.m in Sources */,
+				44BD0EEB1DEFDE0300D81758 /* LoginViewController.m in Sources */,
+				44BD0EFD1DEFDE7A00D81758 /* CaseDetailViewController.m in Sources */,
+				44BD0EF41DEFDE3A00D81758 /* EditProfileViewController.m in Sources */,
 				442D0FF41DE2F3DA00CD0658 /* AppDelegate.m in Sources */,
 				442D0FF11DE2F3DA00CD0658 /* main.m in Sources */,
-				4445B93C1DE4698E00C1BBB5 /* LogedInViewController.m in Sources */,
+				44BD0F0F1DEFDEEC00D81758 /* SWRevealViewController.m in Sources */,
+				44BD0EFA1DEFDE6400D81758 /* CaseListViewController.m in Sources */,
+				44BD0F031DEFDE9800D81758 /* AddCaseViewController.m in Sources */,
+				44BD0EF11DEFDE2B00D81758 /* HomeViewController.m in Sources */,
+				44BD0F061DEFDEB400D81758 /* ConfirmViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
