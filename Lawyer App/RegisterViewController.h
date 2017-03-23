@@ -12,14 +12,21 @@
 #import "ConfirmViewController.h"
 @interface RegisterViewController : UIViewController<UITextFieldDelegate>
 @property (strong)   NSMutableDictionary *userInfo;
+@property (strong)   NSMutableDictionary *userInfoToPass;
+
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mobileNumberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordtextField;
-@property (strong, nonatomic)  NSLayoutConstraint *registerButtonBottomConst;
-@property (weak, nonatomic)  NSLayoutConstraint *contentViewTopConst;
+
 - (IBAction)registorButtonAction:(id)sender;
-@property (weak, nonatomic) IBOutlet UIView *registerScreenView;
-@property (nonatomic, retain)  UITextField *clickedDone;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+
+@property (weak, nonatomic) UITextField *activeField;
+
+
+
 @end

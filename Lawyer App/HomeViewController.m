@@ -7,7 +7,7 @@
 //
 
 #import "HomeViewController.h"
-#import "SWRevealViewController.h"
+//#import "SWRevealViewController.h"
 
 @interface HomeViewController ()
 
@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-      self.navigationController.navigationBar.hidden = YES;
+      //self.navigationController.navigationBar.hidden = YES;
       _addButtonImage.layer.cornerRadius = 30;
     //  _addButtonImage.layer.cornerRadius = self.addButtonImage.frame.size.width/2;
         _addButtonImage.clipsToBounds = YES;
@@ -57,6 +57,6 @@
 */
 
 - (IBAction)sidebarButton:(id)sender {
-    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+   // [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
 }
 @end

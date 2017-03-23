@@ -11,7 +11,7 @@
 #define ACCEPTABLE_CHARECTERS @"0123456789"
 #import "RequestManager.h"
 
-@interface LoginViewController ()<UITextFieldDelegate>
+@interface LoginViewController ()
 
 {
     NSMutableDictionary *dictWithUserMobileNumberAndPassword;
@@ -24,98 +24,87 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-      _clickedDone.returnKeyType = UIReturnKeyDone;
+     [_mobileNumberTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+     [_passwordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+     [_corporateIdTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+     [_businessUserMobileNumberTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+     [_businessUserPasswordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     
-    _mobileNumberTextField.delegate = self;
-    _passwordTextField.delegate = self;
+       // text field delegate
+     _mobileNumberTextField.delegate = self;
+     _passwordTextField.delegate = self;
+    _corporateIdTextField.delegate = self;
+    _businessUserMobileNumberTextField.delegate = self;
+    _businessUserPasswordTextField.delegate = self;
     
     //store mobile number and password
-    dictWithUserMobileNumberAndPassword = [[NSMutableDictionary alloc]init];
+     dictWithUserMobileNumberAndPassword = [[NSMutableDictionary alloc]init];
    
     //store response from server
-    userInfoFromResponse = [[NSMutableDictionary alloc]init];
+     userInfoFromResponse = [[NSMutableDictionary alloc]init];
 
     //touches anywhere - keyboard hide
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(dismissKeyboard)];
+     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+     [self.view addGestureRecognizer:tap];
     
-    
-    [self.view addGestureRecognizer:tap];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+
 }
 -(void)dismissKeyboard {
 
     [self.view endEditing:true];
 }
-#pragma mark - keyboard movements
-- (void)viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-
-- (void)keyboardWillShow:(NSNotification *)notification
+# pragma mark - keyboard movements
+- (void)textFieldDidBeginEditing:(UITextField *)sender
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    _activeField = sender;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)sender
+{
+    _activeField = nil;
+}
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    NSDictionary* info = [notification userInfo];
+    CGRect kbRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+   
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbRect.size.height+10.0, 0.0);
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
     
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect f = self.view.frame;
-        f.origin.y = -keyboardSize.height;
-        self.view.frame = f;
-    }];
+    CGRect aRect = self.view.frame;
+    aRect.size.height  -= kbRect.size.height;
+    if (!CGRectContainsPoint(aRect, _activeField.frame.origin) ) {
+        [_scrollView scrollRectToVisible:_activeField.frame animated:YES];
+    }
 }
-
--(void)keyboardWillHide:(NSNotification *)notification
+- (void)keyboardWillBeHidden:(NSNotification *)notification
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect f = self.view.frame;
-        f.origin.y = 0.0f;
-        self.view.frame = f;
-    }];
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
 }
-
 
 # pragma Textfield Delegate METHODS
--(void)textFieldDidBeginEditing:(UITextField *)textField{
-    //mobile number field
-     if (textField.tag == 1) {
-         _loginButtonBottomConst.constant = 266;
-        if (IS_STANDARD_IPHONE_6_PLUS) {
-        _loginButtonBottomConst.constant = 290;
-        }
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-        [self.view layoutIfNeeded];
-        }];
-    }
-     //password field
-    else{
-        _loginButtonBottomConst.constant = 230;
-        if (IS_STANDARD_IPHONE_6_PLUS) {
-            _loginButtonBottomConst.constant = 244;
-        }
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-        [self.view layoutIfNeeded];
-        }];
-    }
-}
--(void)textFieldDidEndEditing:(UITextField *)textField{
-    _loginButtonBottomConst.constant = 20;
-    [self.view setNeedsUpdateConstraints];
-    [UIView animateWithDuration:0.2 animations:^{
-        [self.view layoutIfNeeded];
-    }];
-}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    if (textField.tag == 1) {
+        [_passwordTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 2) {
+        [_passwordTextField resignFirstResponder];
+    }
+    else if (textField.tag == 3) {
+        [_businessUserMobileNumberTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 4) {
+        [_businessUserPasswordTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 5) {
+        [_businessUserPasswordTextField resignFirstResponder];
+    }
     return YES;
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
@@ -124,22 +113,37 @@
         if (_mobileNumberTextField.text.length >= 10 && range.length == 0)
             return NO;
     }
+        if(textField.tag == 4){
+        if (_businessUserMobileNumberTextField.text.length >= 10 && range.length == 0)
+            return NO;
+    }
+
         if(textField.tag == 1){
              NSCharacterSet *chrectersString = [[NSCharacterSet characterSetWithCharactersInString:ACCEPTABLE_CHARECTERS] invertedSet];
              NSString *filtered = [[string componentsSeparatedByCharactersInSet:chrectersString] componentsJoinedByString:@""];
              return [string isEqualToString:filtered];
     }
-        if(textField.tag == 2){
-          
-          [_passwordTextField setSecureTextEntry:YES];
+       if(textField.tag == 4){
+        NSCharacterSet *chrectersString = [[NSCharacterSet characterSetWithCharactersInString:ACCEPTABLE_CHARECTERS] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:chrectersString] componentsJoinedByString:@""];
+        return [string isEqualToString:filtered];
     }
-              return YES;
+
+            if(textField.tag == 2){
+           [_passwordTextField setSecureTextEntry:YES];
+    }
+         if(textField.tag == 5){
+        [_businessUserPasswordTextField setSecureTextEntry:YES];
+    }
+    
+    
+   return YES;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-#  pragma Login Button Action
+# pragma Login Button Action
 - (IBAction)loginButtonAction:(id)sender {
     
     [dictWithUserMobileNumberAndPassword setObject:_mobileNumberTextField.text forKey:@"user_login"];
@@ -161,14 +165,15 @@
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]){
                 
                   userInfoFromResponse = [responseDict objectForKey:@"data"];
-                NSLog(@"info -%@",userInfoFromResponse);
+                  NSLog(@"info -%@",userInfoFromResponse);
                 
                  [self performSegueWithIdentifier:@"LoginSuccessful" sender:self];
+                
                 }
            }
-    }]; 
+    }]; // login api end
 }
-   //A basic alert showing method
+    //A basic alert showing method
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -177,8 +182,8 @@
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
-#pragma segue methods
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+ #pragma segue methods
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"LoginSuccessful"]) {
         HomeViewController *vc = (HomeViewController *)segue.destinationViewController;
         vc.userInfo = userInfoFromResponse;

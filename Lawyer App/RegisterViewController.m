@@ -9,14 +9,12 @@
 #import "RegisterViewController.h"
 #import "RequestManager.h"
 #define IS_STANDARD_IPHONE_6_PLUS ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+#define ACCEPTABLE_CHARECTERS @"0123456789"
 @interface RegisterViewController ()
 {
-
     NSMutableDictionary *userInfoFromResponse;
     NSMutableDictionary *dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword;
 }
-
-
 @end
 
 @implementation RegisterViewController
@@ -24,8 +22,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _clickedDone.returnKeyType = UIReturnKeyDone;
-    
+    [_userNameTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_mobileNumberTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_emailTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_passwordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_confirmPasswordtextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+   
+    // text field delegates
     _userNameTextField.delegate = self;
     _mobileNumberTextField.delegate = self;
     _emailTextField.delegate = self;
@@ -35,124 +38,95 @@
     dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword= [[NSMutableDictionary alloc]init];
     
     //store response from server
-    userInfoFromResponse = [[NSMutableDictionary alloc]init];
+     userInfoFromResponse = [[NSMutableDictionary alloc]init];
     _userInfo= [[NSMutableDictionary alloc]init];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(dismissKeyboard)];
+    _userInfoToPass= [[NSMutableDictionary alloc]init];
+   
     
+     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+     [self.view addGestureRecognizer:tap];
     
-    [self.view addGestureRecognizer:tap];
-    
-}
-# pragma Textfield Delegate METHODS
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardDidShow:)name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
 
--(void)dismissKeyboard {
+}
+ -(void)dismissKeyboard {
     
     [self.view endEditing:true];
 }
 #pragma mark - keyboard movements
-- (void)viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-
-- (void)keyboardWillShow:(NSNotification *)notification
+- (void)textFieldDidBeginEditing:(UITextField *)sender
 {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    _activeField = sender;
+}
+- (void)textFieldDidEndEditing:(UITextField *)sender
+{
+    _activeField = nil;
+}
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    NSDictionary* info = [notification userInfo];
+    CGRect kbRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect f = self.view.frame;
-        f.origin.y = -keyboardSize.height;
-        self.view.frame = f;
-    }];
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbRect.size.height+10.0, 0.0);
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbRect.size.height;
+    if (!CGRectContainsPoint(aRect, _activeField.frame.origin) ) {
+        [_scrollView scrollRectToVisible:_activeField.frame animated:YES];
+    }
+}
+- (void)keyboardWillBeHidden:(NSNotification *)notification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
 }
 
--(void)keyboardWillHide:(NSNotification *)notification
-{
-    [UIView animateWithDuration:0.3 animations:^{
-        CGRect f = self.view.frame;
-        f.origin.y = 0.0f;
-        self.view.frame = f;
-    }];
-}
 # pragma Textfield Delegate METHODS
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+      if (textField.tag == 1) {
+        [_mobileNumberTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 2) {
+        [_emailTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 3) {
+        [_passwordTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 4) {
+        [_confirmPasswordtextField becomeFirstResponder];
+    }
+    else if (textField.tag == 5) {
+        [_confirmPasswordtextField resignFirstResponder];
+    }
+        return YES;
+}
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    
+    if(textField.tag == 2){ 
+        if (_mobileNumberTextField.text.length >= 10 && range.length == 0)
+            return NO;
+    }
+    if(textField.tag == 2){
+        NSCharacterSet *chrectersString = [[NSCharacterSet characterSetWithCharactersInString:ACCEPTABLE_CHARECTERS] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:chrectersString] componentsJoinedByString:@""];
+        return [string isEqualToString:filtered];
+    }
+    if(textField.tag == 4){
+        
+        [_passwordTextField setSecureTextEntry:YES];
+    }
+    if(textField.tag == 5){
+        
+        [_confirmPasswordtextField setSecureTextEntry:YES];
+    }
+
     return YES;
 }
--(void)textFieldDidBeginEditing:(UITextField *)textField{
-    //user name text field
-    if (textField.tag == 1) {
-        _registerButtonBottomConst.constant = 266;
-        if (IS_STANDARD_IPHONE_6_PLUS) {
-            _registerButtonBottomConst.constant = 290;
-        }
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
-    //mobile number field
-    else if (textField.tag == 2){
-        _registerButtonBottomConst.constant = 230;
-        if (IS_STANDARD_IPHONE_6_PLUS) {
-            _registerButtonBottomConst.constant = 244;
-        }
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
-    // email text field
-    else if (textField.tag == 3){
-        _registerButtonBottomConst.constant = 194;
-        if (IS_STANDARD_IPHONE_6_PLUS) {
-            _registerButtonBottomConst.constant = 198;
-        }
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
-    // password text field
-    else if (textField.tag == 4){
-        _registerButtonBottomConst.constant = 158;
-        if (IS_STANDARD_IPHONE_6_PLUS) {
-            _registerButtonBottomConst.constant = 160;
-        }
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
-    // confirm password field
-    else {
-        _registerButtonBottomConst.constant = 122;
-        if (IS_STANDARD_IPHONE_6_PLUS) {
-            _registerButtonBottomConst.constant = 124;
-        }
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
-
-
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (IBAction)registorButtonAction:(id)sender {
     [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_userNameTextField.text forKey:@"user_name"];
     [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_emailTextField.text forKey:@"user_email"];
@@ -160,7 +134,7 @@
     [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_passwordTextField.text forKey:@"user_login_password"];
     [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_confirmPasswordtextField.text forKey:@"confirm_login_password"];
     
-    [_userInfo addEntriesFromDictionary:  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword];
+    [_userInfo addEntriesFromDictionary: dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword];
     
     
     //register user on server - hit api
@@ -178,20 +152,27 @@
             
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
                 NSLog(@" signup status %@", responseDict);
-          //   [self performSegueWithIdentifier:@"confirm screen" sender:self];
+                
+                 NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+              
+                _userInfoToPass =[NSMutableDictionary dictionaryWithObjectsAndKeys:[dataDict valueForKey:@"user_id"],@"user_id",[dataDict  valueForKey:@"user_security_hash"],@"user_security_hash", nil];
+                
+                 [self performSegueWithIdentifier:@"confirm screen" sender:self];
             }
         }
-    }];//sign api ends
-
+    }]; //signup api ends
 }
 #pragma segue methods
-//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-//    if ([[segue identifier] isEqualToString:@"confirm screen"]) {
-//        //pass info to next screen
-//        ConfirmViewController *vc = (ConfirmViewController *)segue.destinationViewController;
-//        vc.userInfo = _userInfo;
-//    }
-//}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"confirm screen"]) {
+        //pass info to next screen
+        ConfirmViewController *vc = (ConfirmViewController *)segue.destinationViewController;
+        vc.userInfoToRecive =_userInfoToPass;
+    }
+}
+ #pragma alert methods
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -199,6 +180,10 @@
     }];
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end

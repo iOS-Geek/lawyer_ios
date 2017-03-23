@@ -10,4 +10,6 @@
 
 @interface AddCaseViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) UITextField *activeField;
 @end

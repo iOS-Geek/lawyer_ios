@@ -10,7 +10,10 @@
 #import "AppDelegate.h"
 #import "RequestManager.h"
 @interface ConfirmViewController : UIViewController
-@property (nonatomic,weak) NSMutableDictionary *userInfo;
+ @property (strong) NSMutableDictionary *userInfoToRecive;
 @property (weak, nonatomic) IBOutlet UITextField *mobileNumberTextField;
 - (IBAction)confirmButtonAction:(id)sender;
+@property (nonatomic, retain)  UITextField *clickedDone;
+
+
 @end

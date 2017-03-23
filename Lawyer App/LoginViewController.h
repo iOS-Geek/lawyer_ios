@@ -10,12 +10,18 @@
 #import "AppDelegate.h"
 #import "RequestManager.h"
 #import "HomeViewController.h"
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController<UITextFieldDelegate>
+@property (weak ,nonatomic) NSMutableDictionary *userInfo;
 @property (weak, nonatomic) IBOutlet UITextField *mobileNumberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (strong, nonatomic)  NSLayoutConstraint *loginButtonBottomConst;
 - (IBAction)loginButtonAction:(id)sender;
+
+@property (weak, nonatomic) UITextField *activeField;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+
 @property (weak, nonatomic) IBOutlet UITextField *corporateIdTextField;
-@property (nonatomic, retain)  UITextField *clickedDone;
+@property (weak, nonatomic) IBOutlet UITextField *businessUserMobileNumberTextField;
+@property (weak, nonatomic) IBOutlet UITextField *businessUserPasswordTextField;
 
 @end

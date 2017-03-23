@@ -18,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _messageButtonImage.layer.cornerRadius = 30;
+    _messageButtonImage.clipsToBounds = YES;
    // _retainedView.backgroundColor =[UIColor greenColor];
    }
 

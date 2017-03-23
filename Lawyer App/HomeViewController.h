@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SWRevealViewController.h"
+//#import "SWRevealViewController.h"
 @interface HomeViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIButton *sidebarButton;
-- (IBAction)sidebarButton:(id)sender;
+//- (IBAction)sidebarButton:(id)sender;
 
 @property (nonatomic,weak) NSMutableDictionary *userInfo;
-
 @property (weak, nonatomic) IBOutlet UIImageView *addButtonImage;
 
 
