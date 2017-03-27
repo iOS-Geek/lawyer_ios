@@ -11,11 +11,12 @@
 #define ACCEPTABLE_CHARECTERS @"0123456789"
 #import "RequestManager.h"
 
-@interface LoginViewController ()
+@interface LoginViewController ()<UIScrollViewDelegate>
 
 {
     NSMutableDictionary *dictWithUserMobileNumberAndPassword;
     NSMutableDictionary *userInfoFromResponse;
+    BOOL scrollDirectionDetermined;
 }
 
 @end
@@ -24,11 +25,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+   
+//    _scrollView.frame = CGRectMake(0,0,45,45);
+    
      [_mobileNumberTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
      [_passwordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
      [_corporateIdTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
      [_businessUserMobileNumberTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
      [_businessUserPasswordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    
+     _scrollView.delegate = self;
     
        // text field delegate
      _mobileNumberTextField.delegate = self;
@@ -47,45 +53,97 @@
      UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
      [self.view addGestureRecognizer:tap];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
 
+
+}
+# pragma scroll view delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+   
+    //CGPoint translation = [scrollView.panGestureRecognizer translationInView:_dragableView.superview];
+   
+    NSLog(@"%f",scrollView.contentOffset.x);
+//    if( translation.x > 0)
+//    {
+//       _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
+//                                         + translation.x/2, 89, 120, 2);
+//        
+//    }
+//    else
+//    {
+//        _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
+//                                         - translation.x/2, 89, 120, 2);
+//     
+//    }
+    if (scrollView.contentOffset.x == 0) {
+        _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
+                                         - scrollView.contentOffset.x/2, 89, 120, 2);
+    }else{
+        _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
+                                         + scrollView.contentOffset.x/2, 89, 120, 2);
+    }
+    scrollDirectionDetermined = YES;
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    scrollDirectionDetermined = NO;
 }
 -(void)dismissKeyboard {
 
     [self.view endEditing:true];
 }
 # pragma mark - keyboard movements
-- (void)textFieldDidBeginEditing:(UITextField *)sender
-{
-    _activeField = sender;
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    //email field
+    if (textField.tag == 1) {
+        _imageTopConstraints.constant= -80;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    //password field
+    else if (textField.tag == 2){
+         _imageTopConstraints.constant = -60;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+     //corporateId text  field
+    else if (textField.tag == 3){
+        _slideImageTopConstraints.constant = -120;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+     //business user mobile number text field
+    else if (textField.tag == 4){
+        _slideImageTopConstraints.constant = -110;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+     //business user password field
+    else if (textField.tag == 5){
+        _slideImageTopConstraints.constant = -100;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)sender
-{
-    _activeField = nil;
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+     _imageTopConstraints.constant = 40;
+     _slideImageTopConstraints.constant = 40;
+    [self.view setNeedsUpdateConstraints];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
-- (void)keyboardDidShow:(NSNotification *)notification
-{
-    NSDictionary* info = [notification userInfo];
-    CGRect kbRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-   
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbRect.size.height+10.0, 0.0);
-    _scrollView.contentInset = contentInsets;
-    _scrollView.scrollIndicatorInsets = contentInsets;
-    
-    CGRect aRect = self.view.frame;
-    aRect.size.height  -= kbRect.size.height;
-    if (!CGRectContainsPoint(aRect, _activeField.frame.origin) ) {
-        [_scrollView scrollRectToVisible:_activeField.frame animated:YES];
-    }
-}
-- (void)keyboardWillBeHidden:(NSNotification *)notification
-{
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    _scrollView.contentInset = contentInsets;
-    _scrollView.scrollIndicatorInsets = contentInsets;
-}
+
 
 # pragma Textfield Delegate METHODS
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

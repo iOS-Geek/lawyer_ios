@@ -23,9 +23,8 @@
 - (IBAction)registorButtonAction:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong , nonatomic) IBOutlet NSLayoutConstraint *imageTopConstraint;
 
-
-@property (weak, nonatomic) UITextField *activeField;
 
 
 

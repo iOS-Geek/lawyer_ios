@@ -12,4 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *changedPasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
+- (IBAction)submitButtonAction:(id)sender;
+@property (strong)   NSMutableDictionary *userInfo;
 @end

@@ -11,15 +11,24 @@
 #import "RequestManager.h"
 #import "HomeViewController.h"
 @interface LoginViewController : UIViewController<UITextFieldDelegate>
+typedef enum ScrollDirection {
+    ScrollDirectionNone,
+    ScrollDirectionRight,
+    ScrollDirectionLeft,
+    ScrollDirectionUp,
+    ScrollDirectionDown,
+    ScrollDirectionCrazy,
+} ScrollDirection;
 @property (weak ,nonatomic) NSMutableDictionary *userInfo;
 @property (weak, nonatomic) IBOutlet UITextField *mobileNumberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 - (IBAction)loginButtonAction:(id)sender;
 
-@property (weak, nonatomic) UITextField *activeField;
+@property (weak, nonatomic) IBOutlet UIView *dragableView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
-
+@property (strong , nonatomic) IBOutlet NSLayoutConstraint *imageTopConstraints;
+@property (strong , nonatomic) IBOutlet NSLayoutConstraint *slideImageTopConstraints;
 @property (weak, nonatomic) IBOutlet UITextField *corporateIdTextField;
 @property (weak, nonatomic) IBOutlet UITextField *businessUserMobileNumberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *businessUserPasswordTextField;

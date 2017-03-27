@@ -39,43 +39,13 @@
    // NSLog(@"my info :%@", _userInfoToRecive);
    
 }
+# pragma text field delegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
 }
-    - (void)viewWillAppear:(BOOL)animated {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    }
-
-    - (void)viewWillDisappear:(BOOL)animated {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    }
-
-
-    - (void)keyboardWillShow:(NSNotification *)notification
-    {
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect f = self.view.frame;
-            f.origin.y = -keyboardSize.height/8;
-            self.view.frame = f;
-        }];
-    }
-
-    -(void)keyboardWillHide:(NSNotification *)notification
-    {
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect f = self.view.frame;
-            f.origin.y = 0.0f;
-            self.view.frame = f;
-        }];
-    }
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
         if(textField.tag == 1){
         NSCharacterSet *chrectersString = [[NSCharacterSet characterSetWithCharactersInString:ACCEPTABLE_CHARECTERS] invertedSet];

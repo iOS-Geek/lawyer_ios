@@ -14,6 +14,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *mobileNumberTextField;
 - (IBAction)confirmButtonAction:(id)sender;
 @property (nonatomic, retain)  UITextField *clickedDone;
-
+@property (strong , nonatomic) IBOutlet NSLayoutConstraint *imageTopConstraint;
 
 @end

@@ -46,8 +46,7 @@
      UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
      [self.view addGestureRecognizer:tap];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardDidShow:)name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+   
 
 }
  -(void)dismissKeyboard {
@@ -55,36 +54,56 @@
     [self.view endEditing:true];
 }
 #pragma mark - keyboard movements
-- (void)textFieldDidBeginEditing:(UITextField *)sender
-{
-    _activeField = sender;
-}
-- (void)textFieldDidEndEditing:(UITextField *)sender
-{
-    _activeField = nil;
-}
-- (void)keyboardDidShow:(NSNotification *)notification
-{
-    NSDictionary* info = [notification userInfo];
-    CGRect kbRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbRect.size.height+10.0, 0.0);
-    _scrollView.contentInset = contentInsets;
-    _scrollView.scrollIndicatorInsets = contentInsets;
-    
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbRect.size.height;
-    if (!CGRectContainsPoint(aRect, _activeField.frame.origin) ) {
-        [_scrollView scrollRectToVisible:_activeField.frame animated:YES];
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    //name field
+    if (textField.tag == 1) {
+        _imageTopConstraint.constant= -165;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
     }
+    //mobile number field
+    else if (textField.tag == 2){
+        _imageTopConstraint.constant = -160;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    //email  field
+    else if (textField.tag == 3){
+        _imageTopConstraint.constant = -158;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    //password field
+    else if (textField.tag == 4){
+        _imageTopConstraint.constant = -153;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    //confirm password field
+    else if (textField.tag == 5){
+        _imageTopConstraint.constant = -150;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    
 }
-- (void)keyboardWillBeHidden:(NSNotification *)notification
-{
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    _scrollView.contentInset = contentInsets;
-    _scrollView.scrollIndicatorInsets = contentInsets;
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    _imageTopConstraint.constant = 2;
+    [self.view setNeedsUpdateConstraints];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
-
 # pragma Textfield Delegate METHODS
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
