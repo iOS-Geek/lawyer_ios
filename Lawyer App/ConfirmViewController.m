@@ -26,8 +26,8 @@
     // Do any additional setup after loading the view.
     
     
-    [_mobileNumberTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
-    
+    [_mobileNumberTextField setValue:[UIColor whiteColor]  forKeyPath:@"_placeholderLabel.textColor"];
+  
     // text field delegate
       _mobileNumberTextField.delegate = self;
     
@@ -40,6 +40,25 @@
    
 }
 # pragma text field delegate
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    //email field
+    if (textField.tag == 1) {
+        _imageTopConstraints.constant= -8;
+       [UIView animateWithDuration:0.2 animations:^{
+                   }];
+    }
+    
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    _imageTopConstraints.constant = 8;
+    
+    [self.view setNeedsUpdateConstraints];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];

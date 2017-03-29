@@ -85,7 +85,7 @@
 //    "user_id" = 383;
 //    "user_security_hash" = 2361f1a2873fb180455546fb2d8f1606;
     [dictWithUserNewPasswordAndConfirmPassword setObject:@" 383" forKey:@"user_id"];
-    [dictWithUserNewPasswordAndConfirmPassword setObject:@" 5a2e309a0d0d04f11aaacb7707cc3c2b" forKey:@"user_security_hash"];
+    [dictWithUserNewPasswordAndConfirmPassword setObject:@"0499eab7a2ae8e324c5c269afa1ea6e6" forKey:@"user_security_hash"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_changedPasswordTextField.text forKey:@"user_login_password"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_confirmPasswordTextField.text forKey:@"confirm_login_password"];
    
@@ -107,7 +107,7 @@
                 
                 [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
                 
-                [self performSegueWithIdentifier:@"passwordUpdated" sender:self];
+               // [self performSegueWithIdentifier:@"passwordUpdated" sender:self];
             }
         }
     }];//change password api ends

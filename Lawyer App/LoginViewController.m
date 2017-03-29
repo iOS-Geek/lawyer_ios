@@ -61,7 +61,7 @@
    
     //CGPoint translation = [scrollView.panGestureRecognizer translationInView:_dragableView.superview];
    
-    NSLog(@"%f",scrollView.contentOffset.x);
+   // NSLog(@"%f",scrollView.contentOffset.x);
 //    if( translation.x > 0)
 //    {
 //       _dragableView.frame = CGRectMake(_dragableView.frame.origin.x

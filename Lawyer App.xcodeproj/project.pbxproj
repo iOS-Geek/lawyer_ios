@@ -12,6 +12,7 @@
 		442D0FFA1DE2F3DA00CD0658 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FF81DE2F3DA00CD0658 /* Main.storyboard */; };
 		442D0FFC1DE2F3DA00CD0658 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FFB1DE2F3DA00CD0658 /* Assets.xcassets */; };
 		442D0FFF1DE2F3DA00CD0658 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FFD1DE2F3DA00CD0658 /* LaunchScreen.storyboard */; };
+		4444DF9D1DFEC8C100D06F65 /* confirmMobileNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4444DF9C1DFEC8C100D06F65 /* confirmMobileNumberViewController.m */; };
 		44BD0EEB1DEFDE0300D81758 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EEA1DEFDE0300D81758 /* LoginViewController.m */; };
 		44BD0EEE1DEFDE1900D81758 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EED1DEFDE1900D81758 /* RegisterViewController.m */; };
 		44BD0EF11DEFDE2B00D81758 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EF01DEFDE2B00D81758 /* HomeViewController.m */; };
@@ -36,6 +37,8 @@
 		442D0FFB1DE2F3DA00CD0658 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		442D0FFE1DE2F3DA00CD0658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		442D10001DE2F3DA00CD0658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4444DF9B1DFEC8C100D06F65 /* confirmMobileNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = confirmMobileNumberViewController.h; sourceTree = "<group>"; };
+		4444DF9C1DFEC8C100D06F65 /* confirmMobileNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = confirmMobileNumberViewController.m; sourceTree = "<group>"; };
 		44BD0EE91DEFDDF600D81758 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		44BD0EEA1DEFDE0300D81758 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		44BD0EEC1DEFDE1100D81758 /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -106,6 +109,8 @@
 				44BD0EED1DEFDE1900D81758 /* RegisterViewController.m */,
 				44BD0F041DEFDEAE00D81758 /* ConfirmViewController.h */,
 				44BD0F051DEFDEB400D81758 /* ConfirmViewController.m */,
+				4444DF9B1DFEC8C100D06F65 /* confirmMobileNumberViewController.h */,
+				4444DF9C1DFEC8C100D06F65 /* confirmMobileNumberViewController.m */,
 				442D0FF81DE2F3DA00CD0658 /* Main.storyboard */,
 				44BD0EEF1DEFDE2400D81758 /* HomeViewController.h */,
 				44BD0EF01DEFDE2B00D81758 /* HomeViewController.m */,
@@ -223,6 +228,7 @@
 				442D0FF11DE2F3DA00CD0658 /* main.m in Sources */,
 				44BD0F0F1DEFDEEC00D81758 /* SWRevealViewController.m in Sources */,
 				44BD0EFA1DEFDE6400D81758 /* CaseListViewController.m in Sources */,
+				4444DF9D1DFEC8C100D06F65 /* confirmMobileNumberViewController.m in Sources */,
 				44BD0F031DEFDE9800D81758 /* AddCaseViewController.m in Sources */,
 				44BD0EF11DEFDE2B00D81758 /* HomeViewController.m in Sources */,
 				44BD0F061DEFDEB400D81758 /* ConfirmViewController.m in Sources */,
@@ -347,7 +353,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MJNVRNY5HQ;
 				INFOPLIST_FILE = "Lawyer App/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Brendan.Lawyer-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -360,7 +366,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MJNVRNY5HQ;
 				INFOPLIST_FILE = "Lawyer App/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Brendan.Lawyer-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
