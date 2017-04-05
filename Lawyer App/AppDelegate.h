@@ -12,19 +12,5 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-//if (textField == _userNameTextField) {
-//    [_mobileNumberTextField becomeFirstResponder];
-//}
-//else if (textField == _mobileNumberTextField) {
-//    [_emailTextField becomeFirstResponder];
-//}
-//else if (textField == _emailTextField) {
-//    [_passwordTextField becomeFirstResponder];
-//}
-//else if (textField == _passwordTextField) {
-//    [_confirmPasswordtextField becomeFirstResponder];
-//}
-//else if (textField == _confirmPasswordtextField) {
-//    [_confirmPasswordtextField resignFirstResponder];
 @end
 

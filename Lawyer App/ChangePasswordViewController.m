@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.navigationController.navigationBar.hidden = YES;
     
     _changedPasswordTextField.delegate = self;
     _confirmPasswordTextField.delegate = self;

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SidebarViewController : UIViewController
-
+//@property (nonatomic,weak) NSMutableDictionary *userInfo;
 @end

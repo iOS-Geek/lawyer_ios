@@ -16,6 +16,7 @@
 {
     NSMutableDictionary *dictWithUserMobileNumberAndPassword;
     NSMutableDictionary *userInfoFromResponse;
+    NSMutableDictionary *dictWithCorporateIdAndMobileNumberAndPassword;
     BOOL scrollDirectionDetermined;
 }
 
@@ -45,6 +46,7 @@
     
     //store mobile number and password
      dictWithUserMobileNumberAndPassword = [[NSMutableDictionary alloc]init];
+    dictWithCorporateIdAndMobileNumberAndPassword = [[NSMutableDictionary alloc]init];
    
     //store response from server
      userInfoFromResponse = [[NSMutableDictionary alloc]init];
@@ -224,8 +226,12 @@
                 
                   userInfoFromResponse = [responseDict objectForKey:@"data"];
                   NSLog(@"info -%@",userInfoFromResponse);
+                NSMutableDictionary * dictWithUserSessionLogininfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[responseDict objectForKey:@"data"] objectForKey:@"user_id"],@"user_id",[[responseDict objectForKey:@"data"] objectForKey:@"user_security_hash"],@"user_security_hash", nil];
                 
-                 [self performSegueWithIdentifier:@"LoginSuccessful" sender:self];
+                [[NSUserDefaults standardUserDefaults] setObject:dictWithUserSessionLogininfo forKey:@"SessionLogininfo"];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+
+          [self performSegueWithIdentifier:@"LoginSuccessful" sender:self];
                 
                 }
            }
@@ -243,11 +249,44 @@
  #pragma segue methods
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"LoginSuccessful"]) {
-        HomeViewController *vc = (HomeViewController *)segue.destinationViewController;
+        SWRevealViewController *vc = (SWRevealViewController *)segue.destinationViewController;
         vc.userInfo = userInfoFromResponse;
     }
 }
 -(IBAction)unwindToLoginScreen:(UIStoryboardSegue*)segue{
     
+}
+- (IBAction)loginButtonActionForBusinessUser:(id)sender {
+     [dictWithCorporateIdAndMobileNumberAndPassword setObject:_corporateIdTextField.text forKey:@"user_corporate_id"];
+    [dictWithCorporateIdAndMobileNumberAndPassword setObject:_businessUserMobileNumberTextField.text forKey:@"user_login"];
+    [dictWithCorporateIdAndMobileNumberAndPassword setObject:_businessUserPasswordTextField.text forKey:@"user_login_password"];
+    // "user_corporate_id" = 468252;
+    //check user on server to login
+    [RequestManager getFromServer:@"login" parameters:dictWithCorporateIdAndMobileNumberAndPassword completionHandler:^(NSDictionary *responseDict) {
+        
+        
+        if ([[responseDict objectForKey:@"error"] isEqualToString:@"1"]) {
+            [self showBasicAlert:@"No Network Availbale!!!" Message:@"Please connect to a working internet."];
+            return;
+        }
+        else{
+            if ([[responseDict objectForKey:@"code"] isEqualToString:@"0"]) {
+                [self showBasicAlert:[responseDict objectForKey:@"message"] Message:nil];
+                return;
+            }
+            if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]){
+                
+                userInfoFromResponse = [responseDict objectForKey:@"data"];
+                NSLog(@"info -%@",userInfoFromResponse);
+                NSMutableDictionary * dictWithUserSessionLogininfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[responseDict objectForKey:@"data"] objectForKey:@"user_id"],@"user_id",[[responseDict objectForKey:@"data"] objectForKey:@"user_security_hash"],@"user_security_hash", nil];
+                
+                [[NSUserDefaults standardUserDefaults] setObject:dictWithUserSessionLogininfo forKey:@"SessionLogininfo"];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+                
+                [self performSegueWithIdentifier:@"LoginSuccessful" sender:self];
+                
+            }
+        }
+    }]; // login api end
 }
 @end

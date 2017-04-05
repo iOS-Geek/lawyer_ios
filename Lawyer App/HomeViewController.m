@@ -7,10 +7,12 @@
 //
 
 #import "HomeViewController.h"
-//#import "SWRevealViewController.h"
-
+#import "SWRevealViewController.h"
+#import "SidebarViewController.h"
 @interface HomeViewController ()
-
+{
+    NSMutableDictionary * infoToPass;
+}
 @end
 
 @implementation HomeViewController
@@ -18,26 +20,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-      //self.navigationController.navigationBar.hidden = YES;
+       self.navigationController.navigationBar.hidden = YES;
       _addButtonImage.layer.cornerRadius = 30;
     //  _addButtonImage.layer.cornerRadius = self.addButtonImage.frame.size.width/2;
         _addButtonImage.clipsToBounds = YES;
     
+    [_sidebarButton addTarget:self.revealViewController action:@selector(revealToggle:)
+         forControlEvents:UIControlEventTouchUpInside];
+     [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+
+//     infoToPass = [[NSMutableDictionary alloc]init];
+//    [infoToPass addEntriesFromDictionary:_userInfo];
     
-//   _sidebarButton.target = self.revealViewController;
-//   _sidebarButton.action = @selector(revealToggle:);
-//    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+}
+-(void)revealToggle{
     
-//    SWRevealViewController *revealViewController = self.revealViewController;
-//    if ( revealViewController )
-//    {
-//        [self.sidebarButton setTarget: self.revealViewController];
-//        [self.sidebarButton setAction: @selector( revealToggle: )];
-//        [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-//        
-//    }
-    
-    
+   
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,17 +44,7 @@
 
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
-- (IBAction)sidebarButton:(id)sender {
-   // [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-}
+
 @end

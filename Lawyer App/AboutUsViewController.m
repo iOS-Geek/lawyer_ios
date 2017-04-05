@@ -1,24 +1,23 @@
 //
-//  CaseListViewController.m
+//  AboutUsViewController.m
 //  Lawyer App
 //
-//  Created by iOS Developer on 30/11/16.
+//  Created by iOS Developer on 14/12/16.
 //  Copyright © 2016 Paramjeet Kaur. All rights reserved.
 //
 
-#import "CaseListViewController.h"
+#import "AboutUsViewController.h"
 
-@interface CaseListViewController ()
+@interface AboutUsViewController ()
 
 @end
 
-@implementation CaseListViewController
+@implementation AboutUsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _addButtonImage.layer.cornerRadius = 30;
-    _addButtonImage.clipsToBounds = YES;
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {

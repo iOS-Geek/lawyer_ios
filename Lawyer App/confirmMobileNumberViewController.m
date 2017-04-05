@@ -22,6 +22,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [_mobileNumberTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    
+    _clickedDone.returnKeyType = UIReturnKeyDone;
      _mobileNumberTextField.delegate = self;
     mobileNumber = [[NSMutableDictionary alloc]init];
     _userInfo = [[NSMutableDictionary alloc]init];
@@ -35,10 +37,8 @@
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField.tag == 1) {
-        [_mobileNumberTextField becomeFirstResponder];
-    }
-    return YES;
+    [textField resignFirstResponder];
+       return YES;
 }
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
@@ -75,14 +75,14 @@
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
                 NSLog(@" forget password status %@",responseDict);
                 
-                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
-                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
-                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+//                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+//                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
+//                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
                 
-                [self performSegueWithIdentifier:@"forget password screen" sender:self];
+                [self performSegueWithIdentifier:@"login screen" sender:self];
             }
         }
-    }]; //signup api ends
+    }]; //forgot password api ends
 }
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];

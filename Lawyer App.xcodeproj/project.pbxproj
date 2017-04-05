@@ -26,6 +26,7 @@
 		44BD0F091DEFDED000D81758 /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F081DEFDED000D81758 /* RequestManager.m */; };
 		44BD0F0C1DEFDEDF00D81758 /* SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F0B1DEFDEDF00D81758 /* SidebarViewController.m */; };
 		44BD0F0F1DEFDEEC00D81758 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0F0E1DEFDEEC00D81758 /* SWRevealViewController.m */; };
+		44F96CE41E015AEA00DAAFEC /* AboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44F96CE31E015AEA00DAAFEC /* AboutUsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,8 @@
 		44BD0F0B1DEFDEDF00D81758 /* SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarViewController.m; sourceTree = "<group>"; };
 		44BD0F0D1DEFDEE600D81758 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		44BD0F0E1DEFDEEC00D81758 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		44F96CE21E015AEA00DAAFEC /* AboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutUsViewController.h; sourceTree = "<group>"; };
+		44F96CE31E015AEA00DAAFEC /* AboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutUsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +131,8 @@
 				44BD0F021DEFDE9800D81758 /* AddCaseViewController.m */,
 				44BD0F0A1DEFDED900D81758 /* SidebarViewController.h */,
 				44BD0F0B1DEFDEDF00D81758 /* SidebarViewController.m */,
+				44F96CE21E015AEA00DAAFEC /* AboutUsViewController.h */,
+				44F96CE31E015AEA00DAAFEC /* AboutUsViewController.m */,
 				442D0FFB1DE2F3DA00CD0658 /* Assets.xcassets */,
 				442D0FFD1DE2F3DA00CD0658 /* LaunchScreen.storyboard */,
 				442D10001DE2F3DA00CD0658 /* Info.plist */,
@@ -220,6 +225,7 @@
 				44BD0EEE1DEFDE1900D81758 /* RegisterViewController.m in Sources */,
 				44BD0EF71DEFDE4E00D81758 /* ChangePasswordViewController.m in Sources */,
 				44BD0F001DEFDE8C00D81758 /* AddCommentViewController.m in Sources */,
+				44F96CE41E015AEA00DAAFEC /* AboutUsViewController.m in Sources */,
 				44BD0F091DEFDED000D81758 /* RequestManager.m in Sources */,
 				44BD0EEB1DEFDE0300D81758 /* LoginViewController.m in Sources */,
 				44BD0EFD1DEFDE7A00D81758 /* CaseDetailViewController.m in Sources */,

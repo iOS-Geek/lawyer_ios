@@ -16,4 +16,6 @@
 @property (nonatomic, retain)  UITextField *clickedDone;
 @property (strong , nonatomic) IBOutlet NSLayoutConstraint *imageTopConstraints;
 
+- (IBAction)notRecivedYetButtonAction:(id)sender;
+
 @end

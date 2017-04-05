@@ -40,40 +40,21 @@
    
 }
 # pragma text field delegate
--(void)textFieldDidBeginEditing:(UITextField *)textField{
-    //email field
-    if (textField.tag == 1) {
-        _imageTopConstraints.constant= -8;
-       [UIView animateWithDuration:0.2 animations:^{
-                   }];
-    }
-    
-}
-
--(void)textFieldDidEndEditing:(UITextField *)textField{
-    _imageTopConstraints.constant = 8;
-    
-    [self.view setNeedsUpdateConstraints];
-    [UIView animateWithDuration:0.2 animations:^{
-        [self.view layoutIfNeeded];
-    }];
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
 }
-  - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
         if(textField.tag == 1){
         NSCharacterSet *chrectersString = [[NSCharacterSet characterSetWithCharactersInString:ACCEPTABLE_CHARECTERS] invertedSet];
         NSString *filtered = [[string componentsSeparatedByCharactersInSet:chrectersString] componentsJoinedByString:@""];
         return [string isEqualToString:filtered];
-    }
+    } 
        return YES;
 }
-
 - (void)touchesBegan:(NSSet<UITouch * >* )touches withEvent:(UIEvent *)event{
     UITouch *touch = [touches anyObject];
     if(touch.phase == UITouchPhaseBegan) {
@@ -90,12 +71,10 @@
      str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
     
 
-    sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:str1 ,@"user_id",str2,@"user_security_hash",_mobileNumberTextField.text,@"user_otp", nil];
+     sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:str1 ,@"user_id",str2,@"user_security_hash",_mobileNumberTextField.text,@"user_otp", nil];
          NSLog(@"%@", sampleDict);
     
-
-    
-       [RequestManager getFromServer:@"verify_otp" parameters:sampleDict completionHandler:^(NSDictionary *responseDict) {
+     [RequestManager getFromServer:@"verify_otp" parameters:sampleDict completionHandler:^(NSDictionary *responseDict) {
           
         if ([[responseDict valueForKey:@"error"] isEqualToString:@"1"]) {
             [self showBasicAlert:@"No Network Available!!!" Message:@"User Registered!! Please Login now."];
@@ -138,5 +117,35 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)notRecivedYetButtonAction:(id)sender {
+    str1 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_id"]];
+    str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
+    
+    
+    sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:str1 ,@"user_id",str2,@"user_security_hash", nil];
+    NSLog(@"%@", sampleDict);
+    [RequestManager getFromServer:@"resend_otp" parameters:sampleDict completionHandler:^(NSDictionary *responseDict) {
+        
+        if ([[responseDict valueForKey:@"error"] isEqualToString:@"1"]) {
+            [self showBasicAlert:@"No Network Available!!!" Message:@"User Registered!! Please Login now."];
+            return ;
+        }
+        else{
+            if ([[responseDict objectForKey:@"code"] isEqualToString:@"0"]) {
+                [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+                return;
+            }
+            
+            if ([[responseDict valueForKey:@"code"] isEqualToString:@"1"]){
+                
+                [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_otp"] forKey:@"logged_user_otp"];
+            }
+        }
+    }];// resend_otp api ends
 }
 @end
