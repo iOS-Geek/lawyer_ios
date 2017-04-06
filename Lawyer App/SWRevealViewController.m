@@ -28,7 +28,9 @@
 
 #import "SWRevealViewController.h"
 #import "SidebarViewController.h"
-
+#import "RequestManager.h"
+#import "SidebarViewController.h"
+#import "AppDelegate.h"
 #pragma mark - StatusBar Helper Function
 
 // computes the required offset adjustment due to the status bar for the passed in view,
@@ -52,6 +54,8 @@ static CGFloat statusBarAdjustment( UIView* view )
 @interface SWRevealView: UIView
 {
     __weak SWRevealViewController *_c;
+   
+    
 }
 
 @property (nonatomic, readonly) UIView *rearView;
@@ -70,6 +74,7 @@ static CGFloat statusBarAdjustment( UIView* view )
 
 
 @implementation SWRevealView
+   
 
 
 static CGFloat scaledValue( CGFloat v1, CGFloat min2, CGFloat max2, CGFloat min1, CGFloat max1)
@@ -99,12 +104,6 @@ static CGFloat scaledValue( CGFloat v1, CGFloat min2, CGFloat max2, CGFloat min1
     return self;
 }
 
-//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    if ([[segue identifier] isEqualToString:@"LoginSuccessful"]) {
-//        SidebarViewController *vc = (  SidebarViewController *)segue.destinationViewController;
-//     
-//    }
-//}
 - (void)reloadShadow
 {
     CALayer *frontViewLayer = _frontView.layer;
@@ -713,6 +712,7 @@ const int FrontViewPositionNone = 0xff;
     
     // On iOS7 the applicationFrame does not return the whole screen. This is possibly a bug.
     // As a workaround we use the screen bounds, this still works on iOS6, any zero based frame would work anyway!
+    
     CGRect frame = [[UIScreen mainScreen] bounds];
 
     // create a custom content view for the controller
@@ -732,20 +732,67 @@ const int FrontViewPositionNone = 0xff;
     
     // we set the current frontViewPosition to none before seting the
     // desired initial position, this will force proper controller reload
-    FrontViewPosition initialPosition = _frontViewPosition;
+     FrontViewPosition initialPosition = _frontViewPosition;
     _frontViewPosition = FrontViewPositionNone;
     _rearViewPosition = FrontViewPositionNone;
     _rightViewPosition = FrontViewPositionNone;
     
-    // now set the desired initial position
-    [self _setFrontViewPosition:initialPosition withDuration:0.0];
+     // now set the desired initial position
+     [self _setFrontViewPosition:initialPosition withDuration:0.0];
+    
+    ///// * allocate dictionary * //////
+    
+    _string1 =[[NSMutableString alloc]init];
+    _string2 =[[NSMutableString alloc]init];
+//    _string3 =[[NSMutableString alloc]init];
+//    _string4 =[[NSMutableString alloc]init];
+//    _string5 =[[NSMutableString alloc]init];
+//    _string6 =[[NSMutableString alloc]init];
+//    _string7 =[[NSMutableString alloc]init];
+//    _string8 =[[NSMutableString alloc]init];
+//    _string9 =[[NSMutableString alloc]init];
+//    _string10 =[[NSMutableString alloc]init];
+//    _string11 =[[NSMutableString alloc]init];
+//    _string12 =[[NSMutableString alloc]init];
+//     _string13 =[[NSMutableString alloc]init];
+//     _string14 =[[NSMutableString alloc]init];
+//     _string15 =[[NSMutableString alloc]init];
+    
+    //_userInfoToAdd =[[NSMutableDictionary alloc]init];
+    
+    _string1 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_id"]];
+    _string2 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_security_hash"]];
+//    _string3 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_number"]];
+//     _string4 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_title"]];
+//     _string5 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_type"]];
+//     _string6 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_court_name"]];
+//     _string7 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_position_status"]];
+//     _string8 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_previous_date"]];
+//     _string9 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_next_date"]];
+//     _string10 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_opposite_counselor_name"]];
+//     _string11 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_opposite_counselor"]];
+//     _string12 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_retained_name"]];
+//    _string13 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_retained_contact"]];
+//    _string14 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_retained_comment"]];
+//    _string15 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_start_date"]];
+   
+//    _userInfoToPass = [[NSMutableDictionary alloc]initWithObjectsAndKeys:_string1 ,@"user_id",_string2,@"user_security_hash",_string3 ,@"case_number",_string4 ,@"case_title",_string5 ,@"case_type",_string6 ,@"case_court_name",_string7 ,@"case_position_status",_string8 ,@"case_previous_date",_string9 ,@"case_next_date",_string10 ,@"case_opposite_counselor_name",_string11 ,@"case_opposite_counselor_contact",_string12 ,@"case_retained_name",_string13 ,@"case_retained_contact",_string14 ,@"case_retained_comment",_string15 ,@"case_start_date", nil];
+      _userInfoToPass = [[NSMutableDictionary alloc]initWithObjectsAndKeys:_string1 ,@"user_id",_string2,@"user_security_hash", nil];
+    [self performSegueWithIdentifier:@"sw_rear" sender:self];
 }
 
-
+# pragma pass value to table view
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"sw_rear"]) {
+        SidebarViewController  *vc = ( SidebarViewController  *)segue.destinationViewController;
+        vc.userInfo = _userInfoToPass;
+    }
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
+   
     // Uncomment the following code if you want the child controllers
     // to be loaded at this point.
     //
@@ -763,6 +810,7 @@ const int FrontViewPositionNone = 0xff;
     // we store at this point the view's user interaction state as we may temporarily disable it
     // and resume it back to the previous state, it is possible to override this behaviour by
     // intercepting it on the panGestureBegan and panGestureEnded delegates
+    
     _userInteractionStore = _contentView.userInteractionEnabled;
 }
 
@@ -1879,10 +1927,12 @@ NSString * const SWSegueRightIdentifier = @"sw_right";
 
 - (void)perform
 {
+    
     SWRevealViewController *rvc = [self.sourceViewController revealViewController];
     UIViewController *dvc = self.destinationViewController;
     [rvc pushFrontViewController:dvc animated:YES];
 }
+
 
 @end
 

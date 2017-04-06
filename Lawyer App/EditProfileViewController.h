@@ -9,5 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface EditProfileViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *stateTextField;
+@property (weak, nonatomic) IBOutlet UITextField *userLocationTextField;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong , nonatomic) IBOutlet NSLayoutConstraint *imageTopConstraint;
+
+- (IBAction)sideBarButtonAction:(id)sender;
+- (IBAction)submitButtonAction:(id)sender;
 @end

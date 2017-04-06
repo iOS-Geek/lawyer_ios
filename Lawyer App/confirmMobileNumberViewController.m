@@ -84,6 +84,10 @@
         }
     }]; //forgot password api ends
 }
+
+- (IBAction)backButtonAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

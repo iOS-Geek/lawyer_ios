@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface SidebarViewController : UIViewController
-//@property (nonatomic,weak) NSMutableDictionary *userInfo;
+@property (nonatomic,weak) NSMutableDictionary *userInfo;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+
 @end

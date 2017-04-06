@@ -12,10 +12,12 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *sidebarButton;
 
-//@property (nonatomic,weak) NSMutableDictionary *userInfo;
+@property (nonatomic,weak) NSMutableDictionary *userInfo;
 @property (weak, nonatomic) IBOutlet UIImageView *addButtonImage;
 
-
+@property (strong)  NSMutableDictionary *caseInfoToRecive;
+- (IBAction)addCaseButtonAction:(id)sender;
+//- (IBAction)sideBarButtonAction:(id)sender;
 
 
 @end

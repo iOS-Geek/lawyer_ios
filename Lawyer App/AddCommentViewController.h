@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface AddCommentViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITextField *nextDateTextField;
+@property (weak, nonatomic) IBOutlet UITextField *addCommentTextField;
 
+- (IBAction)addCommentButtonAction:(id)sender;
 @end

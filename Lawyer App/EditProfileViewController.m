@@ -8,7 +8,7 @@
 
 #import "EditProfileViewController.h"
 
-@interface EditProfileViewController ()
+@interface EditProfileViewController ()<UITextFieldDelegate>
 
 @end
 
@@ -17,6 +17,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+  
+    [_userNameTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_emailTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_stateTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_userLocationTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+
+    _userNameTextField.delegate = self;
+    _emailTextField.delegate = self;
+    _stateTextField.delegate = self;
+    _userLocationTextField.delegate = self;
+    
+    self.navigationController.navigationBar.hidden = YES;
 }
 - (void)touchesBegan:(NSSet<UITouch * >* )touches withEvent:(UIEvent *)event{
     UITouch *touch = [touches anyObject];
@@ -28,21 +40,74 @@
         }];
     }
 }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField.tag == 1) {
+        [_emailTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 2) {
+        [_stateTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 3) {
+        [_userLocationTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 4) {
+        [_userLocationTextField resignFirstResponder];
+    }
+    return YES;
+}
+#pragma mark - keyboard movements
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    //name field
+    if (textField.tag == 1) {
+        _imageTopConstraint.constant= -150;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    //email  field
+    else if (textField.tag == 2){
+        _imageTopConstraint.constant = -145;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    //state  field
+    else if (textField.tag == 3){
+        _imageTopConstraint.constant = -140;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+    //location field
+    else if (textField.tag == 4){
+        _imageTopConstraint.constant = -130;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+}
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    _imageTopConstraint.constant = 20;
+    [self.view setNeedsUpdateConstraints];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)sideBarButtonAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-*/
 
+- (IBAction)submitButtonAction:(id)sender {
+}
 @end

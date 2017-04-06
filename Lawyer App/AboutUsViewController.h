@@ -10,4 +10,6 @@
 
 @interface AboutUsViewController : UIViewController
 
+- (IBAction)sideBarButtonAction:(id)sender;
+
 @end

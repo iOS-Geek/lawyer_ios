@@ -157,7 +157,6 @@ typedef NS_ENUM( NSInteger, FrontViewPosition)
     
     // Left position, front view is presented left-offseted by rightViewRevealWidth
     FrontViewPositionLeftSide,
-
     // Center position, rear view is hidden behind front controller
 	FrontViewPositionLeft,
     
@@ -181,6 +180,8 @@ typedef NS_ENUM(NSInteger, SWRevealToggleAnimationType)
     SWRevealToggleAnimationTypeEaseOut,   // <- produces an ease out curve animation
 };
 
+//NSMutableDictionary *userInfoToPass;
+
 
 @interface SWRevealViewController : UIViewController
 
@@ -188,6 +189,25 @@ typedef NS_ENUM(NSInteger, SWRevealToggleAnimationType)
 
 // Object instance init and rear view setting
 - (id)initWithRearViewController:(UIViewController *)rearViewController frontViewController:(UIViewController *)frontViewController;
+
+
+@property(strong) NSMutableDictionary *userInfoToAdd;
+@property(strong) NSMutableDictionary *userInfoToPass;
+@property(strong) NSMutableString *string1;
+@property(strong) NSMutableString  *string2;
+//@property(strong) NSMutableString  *string3;
+//@property(strong) NSMutableString  *string4;
+//@property(strong) NSMutableString  *string5;
+//@property(strong) NSMutableString  *string6;
+//@property(strong) NSMutableString  *string7;
+//@property(strong) NSMutableString  *string8;
+//@property(strong) NSMutableString  *string9;
+//@property(strong) NSMutableString  *string10;
+//@property(strong) NSMutableString  *string11;
+//@property(strong) NSMutableString  *string12;
+//@property(strong) NSMutableString  *string13;
+//@property(strong) NSMutableString  *string14;
+//@property(strong) NSMutableString  *string15;
 
 // Rear view controller, can be nil if not used
 @property (nonatomic) UIViewController *rearViewController;
@@ -313,6 +333,7 @@ typedef NS_ENUM(NSInteger, SWRevealToggleAnimationType)
 // Delegate
 @property (nonatomic,weak) id<SWRevealViewControllerDelegate> delegate;
 @property (strong) NSMutableDictionary *userInfo;
+
 @end
 
 

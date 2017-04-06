@@ -148,4 +148,8 @@
         }
     }];// resend_otp api ends
 }
+
+- (IBAction)backButtonAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

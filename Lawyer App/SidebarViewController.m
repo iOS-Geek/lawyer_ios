@@ -8,11 +8,12 @@
 
 #import "SidebarViewController.h"
 #import "SWRevealViewController.h"
-
+#import "ChangePasswordViewController.h"
+#import "AddCaseViewController.h"
 @interface SidebarViewController () <UITableViewDelegate,UITableViewDataSource>
 {
     NSArray *menuItems;
-  
+    NSMutableDictionary *myDictionary;
 }
 
 @end
@@ -22,7 +23,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+     NSLog(@" my Dictionary - %@" ,_userInfo);
      menuItems = @[@"Home", @"About Us", @"Add Case", @"Change Password", @"Logout", @"ShareApp", @"Edit Profile", @"View Users", @"Case Status", @"Settings"];
+     myDictionary = [[NSMutableDictionary alloc]init];
+    
     
   }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -40,29 +46,60 @@
        
     return cell;
 }
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+        if (indexPath.row == 1) {
+        [self performSegueWithIdentifier:@"about us" sender:indexPath];
+    }
+       else if (indexPath.row == 2) {
+        [self performSegueWithIdentifier:@"add case" sender:indexPath];
+    }
+    else if (indexPath.row == 3) {
+       [self performSegueWithIdentifier:@"change password" sender:indexPath];
+
+    }
+    else if (indexPath.row ==5) {
+        NSString *shareText = [NSString stringWithFormat:@"Text to share"];
+        NSArray *shareObject = @[shareText];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:shareObject applicationActivities:nil];
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
+    else if (indexPath.row == 6) {
+        [self performSegueWithIdentifier:@"edit profile" sender:indexPath];
+        
+    }
+     else if (indexPath.row ==9) {
+     // [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs://"] options:@{} completionHandler:nil];
+  
+    }
+}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"change password"]) {
+        UINavigationController *navController = segue.destinationViewController;
+        ChangePasswordViewController *ChangePassword = [navController childViewControllers].firstObject;
+        [myDictionary addEntriesFromDictionary:_userInfo];
+        ChangePassword.infoToPass = myDictionary;
+    }
+    
+if ([segue.identifier isEqualToString:@"add case"]) {
+        UINavigationController *navController = segue.destinationViewController;
+        AddCaseViewController *addCase = [navController childViewControllers].firstObject;
+        [myDictionary addEntriesFromDictionary:_userInfo];
+        addCase.infoToPass = myDictionary;
+    }
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        return 100;
+        return 60;
     }
     else {
         return 35;
     }
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

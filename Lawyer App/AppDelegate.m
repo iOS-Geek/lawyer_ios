@@ -18,15 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    
-    //     self.revealViewController.rearViewRevealWidth = 200;
-    //     self.revealViewController.rearViewRevealOverdraw = 0;
-    //     self.revealViewController.toggleAnimationDuration = 0.2;
-    //     self.revealViewController.toggleAnimationType = SWRevealToggleAnimationTypeEaseOut;
-    //     self.revealViewController.frontViewShadowRadius = 5;
-
-
-    return YES;
+   return YES;
 }
 
 

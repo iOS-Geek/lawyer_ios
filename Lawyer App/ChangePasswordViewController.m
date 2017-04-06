@@ -9,12 +9,17 @@
 #import "ChangePasswordViewController.h"
 #import "RequestManager.h"
 #import "AppDelegate.h"
+#import "SWRevealViewController.h"
+#import "SidebarViewController.h"
 @interface ChangePasswordViewController ()<UITextFieldDelegate>
 
 {
     NSMutableDictionary *dictWithUserNewPasswordAndConfirmPassword;
     NSMutableDictionary *responseMessageDict;
     NSMutableDictionary *myDict;
+    NSMutableString *str1;
+    NSMutableString *str2;
+    
    
 }
 
@@ -25,18 +30,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    NSLog(@"%@", _infoToPass);
     self.navigationController.navigationBar.hidden = YES;
     
     _changedPasswordTextField.delegate = self;
     _confirmPasswordTextField.delegate = self;
     
+    str1 = [[NSMutableString alloc]init];
+    str2 = [[NSMutableString alloc]init];
+
+    
     [_changedPasswordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_confirmPasswordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     
     dictWithUserNewPasswordAndConfirmPassword = [[NSMutableDictionary alloc]init];
-   // responseMessageDict = [[NSMutableDictionary alloc]init];
-    myDict = [[NSMutableDictionary alloc]init];
+      myDict = [[NSMutableDictionary alloc]init];
     
+
+   
 }
 - (void)touchesBegan:(NSSet<UITouch * >* )touches withEvent:(UIEvent *)event{
     UITouch *touch = [touches anyObject];
@@ -82,11 +94,13 @@
 
 
 - (IBAction)submitButtonAction:(id)sender {
-//parameters for hitting api
-//    "user_id" = 383;
-//    "user_security_hash" = 2361f1a2873fb180455546fb2d8f1606;
-    [dictWithUserNewPasswordAndConfirmPassword setObject:@" 383" forKey:@"user_id"];
-    [dictWithUserNewPasswordAndConfirmPassword setObject:@"0499eab7a2ae8e324c5c269afa1ea6e6" forKey:@"user_security_hash"];
+    
+    str1 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_id"]];
+    str2 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_security_hash"]];
+
+
+    [dictWithUserNewPasswordAndConfirmPassword setObject:str1 forKey:@"user_id"];
+    [dictWithUserNewPasswordAndConfirmPassword setObject:str2 forKey:@"user_security_hash"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_changedPasswordTextField.text forKey:@"user_login_password"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_confirmPasswordTextField.text forKey:@"confirm_login_password"];
    
@@ -125,4 +139,11 @@
 }
 
 
+- (IBAction)sideBarButtonAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+//            ChangePasswordViewController *mapViewController = [[ChangePasswordViewController alloc] init];
+//            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mapViewController];
+//    
+//            [self.revealViewController pushFrontViewController:navigationController animated:YES];
+}
 @end
