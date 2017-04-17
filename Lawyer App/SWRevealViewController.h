@@ -195,19 +195,7 @@ typedef NS_ENUM(NSInteger, SWRevealToggleAnimationType)
 @property(strong) NSMutableDictionary *userInfoToPass;
 @property(strong) NSMutableString *string1;
 @property(strong) NSMutableString  *string2;
-//@property(strong) NSMutableString  *string3;
-//@property(strong) NSMutableString  *string4;
-//@property(strong) NSMutableString  *string5;
-//@property(strong) NSMutableString  *string6;
-//@property(strong) NSMutableString  *string7;
-//@property(strong) NSMutableString  *string8;
-//@property(strong) NSMutableString  *string9;
-//@property(strong) NSMutableString  *string10;
-//@property(strong) NSMutableString  *string11;
-//@property(strong) NSMutableString  *string12;
-//@property(strong) NSMutableString  *string13;
-//@property(strong) NSMutableString  *string14;
-//@property(strong) NSMutableString  *string15;
+
 
 // Rear view controller, can be nil if not used
 @property (nonatomic) UIViewController *rearViewController;

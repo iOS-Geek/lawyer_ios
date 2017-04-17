@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
 - (IBAction)submitButtonAction:(id)sender;
 @property (weak ,nonatomic) NSMutableDictionary * infoToPass;
-- (IBAction)sideBarButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *menuButton;
+
 
 @end

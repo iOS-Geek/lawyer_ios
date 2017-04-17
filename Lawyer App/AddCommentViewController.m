@@ -70,6 +70,7 @@
             }
             
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
+                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                 NSLog(@" forget password status %@",responseDict);
                 
              //  [self performSegueWithIdentifier:@"login screen" sender:self];
@@ -79,6 +80,8 @@
 }
 #pragma alert methods
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
+    title = [title stringByReplacingOccurrencesOfString:@"|" withString:@""];
+
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         

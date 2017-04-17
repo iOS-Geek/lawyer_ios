@@ -57,7 +57,7 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     //name field
     if (textField.tag == 1) {
-        _imageTopConstraint.constant= -165;
+        _imageTopConstraint.constant= -170;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -65,7 +65,7 @@
     }
     //mobile number field
     else if (textField.tag == 2){
-        _imageTopConstraint.constant = -160;
+        _imageTopConstraint.constant = -165;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -73,7 +73,7 @@
     }
     //email  field
     else if (textField.tag == 3){
-        _imageTopConstraint.constant = -158;
+        _imageTopConstraint.constant = -161;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -81,7 +81,7 @@
     }
     //password field
     else if (textField.tag == 4){
-        _imageTopConstraint.constant = -153;
+        _imageTopConstraint.constant = -158;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -89,7 +89,7 @@
     }
     //confirm password field
     else if (textField.tag == 5){
-        _imageTopConstraint.constant = -150;
+        _imageTopConstraint.constant = -155;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -158,7 +158,7 @@
     
     //register user on server - hit api
     [RequestManager getFromServer:@"signup" parameters:_userInfo completionHandler:^(NSDictionary *responseDict) {
-     
+        
         if ([[responseDict valueForKey:@"error"] isEqualToString:@"1"]) {
             [self showBasicAlert:@"No Network Availbale!!!" Message:@"Please connect to a working internet."];
             return ;
@@ -170,15 +170,17 @@
             }
             
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
+                //                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                 NSLog(@" signup status %@", responseDict);
                 
-                 NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
                 [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
                 [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
-              
+                
                 _userInfoToPass =[NSMutableDictionary dictionaryWithObjectsAndKeys:[dataDict valueForKey:@"user_id"],@"user_id",[dataDict  valueForKey:@"user_security_hash"],@"user_security_hash", nil];
                 
-                 [self performSegueWithIdentifier:@"confirm screen" sender:self];
+                [[NSUserDefaults standardUserDefaults] setBool:false forKey:@"otp_Verification_Done"];
+                [self performSegueWithIdentifier:@"confirm screen" sender:self];
             }
         }
     }]; //signup api ends
@@ -193,7 +195,8 @@
 }
  #pragma alert methods
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    title = [title stringByReplacingOccurrencesOfString:@"|" withString:@""];
+  UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }];

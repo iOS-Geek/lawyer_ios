@@ -7,7 +7,7 @@
 //
 
 #import "EditProfileViewController.h"
-
+#import "SWRevealViewController.h"
 @interface EditProfileViewController ()<UITextFieldDelegate>
 
 @end
@@ -22,23 +22,27 @@
     [_emailTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_stateTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_userLocationTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+     [_userSpecialisationTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
 
     _userNameTextField.delegate = self;
     _emailTextField.delegate = self;
     _stateTextField.delegate = self;
     _userLocationTextField.delegate = self;
+    _userSpecialisationTextField.delegate = self;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    [self.view addGestureRecognizer:tap];
+    
+    [_menuButton addTarget:self.revealViewController action:@selector(revealToggle:)
+          forControlEvents:UIControlEventTouchUpInside];
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+
     
     self.navigationController.navigationBar.hidden = YES;
 }
-- (void)touchesBegan:(NSSet<UITouch * >* )touches withEvent:(UIEvent *)event{
-    UITouch *touch = [touches anyObject];
-    if(touch.phase == UITouchPhaseBegan) {
-        [self.view endEditing:true];
-        [self.view setNeedsUpdateConstraints];
-        [UIView animateWithDuration:0.2 animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
+-(void)dismissKeyboard {
+    
+    [self.view endEditing:true];
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -52,7 +56,10 @@
         [_userLocationTextField becomeFirstResponder];
     }
     else if (textField.tag == 4) {
-        [_userLocationTextField resignFirstResponder];
+        [_userSpecialisationTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 5) {
+        [_userSpecialisationTextField resignFirstResponder];
     }
     return YES;
 }
@@ -60,7 +67,7 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     //name field
     if (textField.tag == 1) {
-        _imageTopConstraint.constant= -150;
+        _imageTopConstraint.constant= -151;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -68,7 +75,7 @@
     }
     //email  field
     else if (textField.tag == 2){
-        _imageTopConstraint.constant = -145;
+        _imageTopConstraint.constant = -148;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -76,7 +83,7 @@
     }
     //state  field
     else if (textField.tag == 3){
-        _imageTopConstraint.constant = -140;
+        _imageTopConstraint.constant = -145;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
@@ -84,15 +91,23 @@
     }
     //location field
     else if (textField.tag == 4){
-        _imageTopConstraint.constant = -130;
+        _imageTopConstraint.constant = -142;
         [_scrollView setNeedsUpdateConstraints];
         [UIView animateWithDuration:0.2 animations:^{
             [_scrollView layoutIfNeeded];
         }];
     }
+    else if (textField.tag == 5){
+        _imageTopConstraint.constant = -140;
+        [_scrollView setNeedsUpdateConstraints];
+        [UIView animateWithDuration:0.2 animations:^{
+            [_scrollView layoutIfNeeded];
+        }];
+    }
+
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
-    _imageTopConstraint.constant = 20;
+    _imageTopConstraint.constant = 2;
     [self.view setNeedsUpdateConstraints];
     [UIView animateWithDuration:0.2 animations:^{
         [self.view layoutIfNeeded];
@@ -104,9 +119,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (IBAction)sideBarButtonAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+
 
 - (IBAction)submitButtonAction:(id)sender {
 }

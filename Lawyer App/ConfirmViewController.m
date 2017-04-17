@@ -67,15 +67,16 @@
 }
 - (IBAction)confirmButtonAction:(id)sender {
     
-     str1 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_id"]];
-     str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
+    str1 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_id"]];
+    str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
     
-
-     sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:str1 ,@"user_id",str2,@"user_security_hash",_mobileNumberTextField.text,@"user_otp", nil];
-         NSLog(@"%@", sampleDict);
     
-     [RequestManager getFromServer:@"verify_otp" parameters:sampleDict completionHandler:^(NSDictionary *responseDict) {
-          
+    
+    sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_user_id"] ,@"user_id",[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_user_security_hash"],@"user_security_hash",_mobileNumberTextField.text,@"user_otp", nil];
+    NSLog(@"%@", sampleDict);
+    
+    [RequestManager getFromServer:@"verify_otp" parameters:sampleDict completionHandler:^(NSDictionary *responseDict) {
+        
         if ([[responseDict valueForKey:@"error"] isEqualToString:@"1"]) {
             [self showBasicAlert:@"No Network Available!!!" Message:@"User Registered!! Please Login now."];
             return ;
@@ -85,18 +86,19 @@
                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                 return;
             }
-
-         if ([[responseDict valueForKey:@"code"] isEqualToString:@"1"]){
-             
-              NSDictionary *dataDict = [responseDict valueForKey:@"data"];
-             [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
-             [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
-             [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_otp"] forKey:@"logged_user_otp"];
-             
-             [self performSegueWithIdentifier:@"otp verified " sender:self];
-          }
-      }
-   }];//  verify_otp api ends
+            
+            if ([[responseDict valueForKey:@"code"] isEqualToString:@"1"]){
+                //              [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_otp"] forKey:@"logged_user_otp"];
+                [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"otp_Verification_Done"];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"otp_Verification_Done"];
+                [self performSegueWithIdentifier:@"otp verified " sender:self];
+            }
+        }
+    }];//  verify_otp api ends
 }
 #pragma segue methods
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -107,6 +109,8 @@
               }
 }
  -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
+     title = [title stringByReplacingOccurrencesOfString:@"|" withString:@""];
+
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         }];

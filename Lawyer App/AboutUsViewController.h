@@ -10,6 +10,7 @@
 
 @interface AboutUsViewController : UIViewController
 
-- (IBAction)sideBarButtonAction:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
 @end

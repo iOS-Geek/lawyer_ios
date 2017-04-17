@@ -11,7 +11,8 @@
 @interface CaseListViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *addButtonImage;
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+//@property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)addCaseButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIView *addButtonView;
 
 @end

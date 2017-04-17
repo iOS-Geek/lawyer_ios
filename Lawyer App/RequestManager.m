@@ -67,18 +67,20 @@ NSDictionary *dict;
 
                                     if(error == nil)
                                     {
-                             //      NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+//                                   NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+//                                   [text componentsSeparatedByString:@"/"];
                            
                                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0.1), ^{
                                            responseDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                            NSLog(@"Parsed");
+                                       
+                                        NSLog(@"Parsed");
                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                 if(handler != nil && responseDict != nil)
                                                     handler(responseDict);
                                                 //  NSLog(@"%@",responseDict);
-                                               // NSLog(@"Parse and send");
+                                                // NSLog(@"Parse and send");
                                                 
-                                            });
+                                            });    
                                         });
                                     }
                                     else

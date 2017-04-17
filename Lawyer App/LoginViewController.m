@@ -223,7 +223,7 @@
                 return;
             }
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]){
-                
+                 
                   userInfoFromResponse = [responseDict objectForKey:@"data"];
                   NSLog(@"info -%@",userInfoFromResponse);
                 NSMutableDictionary * dictWithUserSessionLogininfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[responseDict objectForKey:@"data"] objectForKey:@"user_id"],@"user_id",[[responseDict objectForKey:@"data"] objectForKey:@"user_security_hash"],@"user_security_hash", nil];
@@ -239,6 +239,8 @@
 }
     //A basic alert showing method
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
+    title = [title stringByReplacingOccurrencesOfString:@"|" withString:@""];
+
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         

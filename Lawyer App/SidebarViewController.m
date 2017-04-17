@@ -14,6 +14,7 @@
 {
     NSArray *menuItems;
     NSMutableDictionary *myDictionary;
+    int screenCheck;
 }
 
 @end
@@ -46,17 +47,65 @@
        
     return cell;
 }
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-        if (indexPath.row == 1) {
-        [self performSegueWithIdentifier:@"about us" sender:indexPath];
-    }
-       else if (indexPath.row == 2) {
-        [self performSegueWithIdentifier:@"add case" sender:indexPath];
-    }
-    else if (indexPath.row == 3) {
-       [self performSegueWithIdentifier:@"change password" sender:indexPath];
+- (void) tableView:(UITableView* )tableView didSelectRowAtIndexPath:(NSIndexPath* )indexPath{
+    if(indexPath.row == 0){
+        if (screenCheck == 0) {
+            [self.revealViewController revealToggleAnimated:true];
+            return;
+        }
+        
+        screenCheck = 0;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+       
+        
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
+        [self.revealViewController setFrontViewController:vc];
+        [self.revealViewController revealToggleAnimated:true];
 
+    
     }
+    if (indexPath.row == 1) {
+        if (screenCheck == 1) {
+            [self.revealViewController revealToggleAnimated:true];
+            return;
+        }
+        
+        screenCheck = 1;
+        // Get a reference to the storyboard
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        //session login api run
+        
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"aboutUsScreen"];
+        [self.revealViewController setFrontViewController:vc];
+        [self.revealViewController revealToggleAnimated:true];
+    }
+//    else if (indexPath.row == 2) {
+//        if (screenCheck == 2) {
+//            [self.revealViewController revealToggleAnimated:true];
+//            return;
+//        }
+//        
+//        screenCheck = 2;
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        //session login api run
+//        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"addCaseScreen"];
+//        [self.revealViewController setFrontViewController:vc];
+//        [self.revealViewController revealToggleAnimated:true];
+//    }
+    else if (indexPath.row == 3) {
+        if (screenCheck == 3) {
+            [self.revealViewController revealToggleAnimated:true];
+            return;
+        }
+        
+        screenCheck = 3;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        //session login api run
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"changePassword"];
+        [self.revealViewController setFrontViewController:vc];
+        [self.revealViewController revealToggleAnimated:true];
+    
+        }
     else if (indexPath.row ==5) {
         NSString *shareText = [NSString stringWithFormat:@"Text to share"];
         NSArray *shareObject = @[shareText];
@@ -64,24 +113,33 @@
         [self presentViewController:activityViewController animated:YES completion:nil];
     }
     else if (indexPath.row == 6) {
-        [self performSegueWithIdentifier:@"edit profile" sender:indexPath];
+        if (screenCheck == 6) {
+            [self.revealViewController revealToggleAnimated:true];
+            return;
+        }
+        
+        screenCheck = 6;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"editProfile"];
+        [self.revealViewController setFrontViewController:vc];
+        [self.revealViewController revealToggleAnimated:true];
         
     }
-     else if (indexPath.row ==9) {
-     // [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs://"] options:@{} completionHandler:nil];
-  
+    else if (indexPath.row ==9) {
+        // [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs://"] options:@{} completionHandler:nil];
+        
     }
 }
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    if ([segue.identifier isEqualToString:@"change password"]) {
-        UINavigationController *navController = segue.destinationViewController;
-        ChangePasswordViewController *ChangePassword = [navController childViewControllers].firstObject;
-        [myDictionary addEntriesFromDictionary:_userInfo];
-        ChangePassword.infoToPass = myDictionary;
-    }
-    
+//
+//    if ([segue.identifier isEqualToString:@"change password"]) {
+//        UINavigationController *navController = segue.destinationViewController;
+//        ChangePasswordViewController *ChangePassword = [navController childViewControllers].firstObject;
+//        [myDictionary addEntriesFromDictionary:_userInfo];
+//        ChangePassword.infoToPass = myDictionary;
+//    }
+//    
 if ([segue.identifier isEqualToString:@"add case"]) {
         UINavigationController *navController = segue.destinationViewController;
         AddCaseViewController *addCase = [navController childViewControllers].firstObject;

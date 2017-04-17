@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FSCalendar.h"
 #import "SWRevealViewController.h"
-@interface HomeViewController : UIViewController
+@interface HomeViewController : UIViewController<FSCalendarDelegate,FSCalendarDataSource,FSCalendarDelegateAppearance>
 
 @property (weak, nonatomic) IBOutlet UIButton *sidebarButton;
 
@@ -16,8 +17,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *addButtonImage;
 
 @property (strong)  NSMutableDictionary *caseInfoToRecive;
-- (IBAction)addCaseButtonAction:(id)sender;
-//- (IBAction)sideBarButtonAction:(id)sender;
 
+
+
+//- (IBAction)buttonAction:(id)sender;
 
 @end

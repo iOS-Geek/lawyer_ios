@@ -47,6 +47,10 @@
     dictWithUserNewPasswordAndConfirmPassword = [[NSMutableDictionary alloc]init];
       myDict = [[NSMutableDictionary alloc]init];
     
+    [_menuButton addTarget:self.revealViewController action:@selector(revealToggle:)
+          forControlEvents:UIControlEventTouchUpInside];
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+    
 
    
 }
@@ -95,12 +99,12 @@
 
 - (IBAction)submitButtonAction:(id)sender {
     
-    str1 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_id"]];
-    str2 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_security_hash"]];
+//    str1 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_id"]];
+//    str2 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_security_hash"]];
 
 
-    [dictWithUserNewPasswordAndConfirmPassword setObject:str1 forKey:@"user_id"];
-    [dictWithUserNewPasswordAndConfirmPassword setObject:str2 forKey:@"user_security_hash"];
+    [dictWithUserNewPasswordAndConfirmPassword setObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"] forKey:@"user_id"];
+    [dictWithUserNewPasswordAndConfirmPassword setObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_security_hash"] forKey:@"user_security_hash"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_changedPasswordTextField.text forKey:@"user_login_password"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_confirmPasswordTextField.text forKey:@"confirm_login_password"];
    
@@ -117,6 +121,7 @@
             }
             
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
+                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                 NSDictionary *dataDict = [responseDict valueForKey:@"data"];
                 //Save user information in local
                 
@@ -130,7 +135,8 @@
 
 //A basic alert showing method
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    title = [title stringByReplacingOccurrencesOfString:@"|" withString:@""];
+  UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }];
@@ -139,11 +145,6 @@
 }
 
 
-- (IBAction)sideBarButtonAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-//            ChangePasswordViewController *mapViewController = [[ChangePasswordViewController alloc] init];
-//            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mapViewController];
-//    
-//            [self.revealViewController pushFrontViewController:navigationController animated:YES];
-}
+
+
 @end

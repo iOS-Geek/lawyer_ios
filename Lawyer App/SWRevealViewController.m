@@ -740,43 +740,14 @@ const int FrontViewPositionNone = 0xff;
      // now set the desired initial position
      [self _setFrontViewPosition:initialPosition withDuration:0.0];
     
+    
     ///// * allocate dictionary * //////
     
     _string1 =[[NSMutableString alloc]init];
     _string2 =[[NSMutableString alloc]init];
-//    _string3 =[[NSMutableString alloc]init];
-//    _string4 =[[NSMutableString alloc]init];
-//    _string5 =[[NSMutableString alloc]init];
-//    _string6 =[[NSMutableString alloc]init];
-//    _string7 =[[NSMutableString alloc]init];
-//    _string8 =[[NSMutableString alloc]init];
-//    _string9 =[[NSMutableString alloc]init];
-//    _string10 =[[NSMutableString alloc]init];
-//    _string11 =[[NSMutableString alloc]init];
-//    _string12 =[[NSMutableString alloc]init];
-//     _string13 =[[NSMutableString alloc]init];
-//     _string14 =[[NSMutableString alloc]init];
-//     _string15 =[[NSMutableString alloc]init];
-    
-    //_userInfoToAdd =[[NSMutableDictionary alloc]init];
     
     _string1 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_id"]];
     _string2 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_security_hash"]];
-//    _string3 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_number"]];
-//     _string4 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_title"]];
-//     _string5 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_type"]];
-//     _string6 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_court_name"]];
-//     _string7 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_position_status"]];
-//     _string8 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_previous_date"]];
-//     _string9 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_next_date"]];
-//     _string10 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_opposite_counselor_name"]];
-//     _string11 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_opposite_counselor"]];
-//     _string12 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_retained_name"]];
-//    _string13 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_retained_contact"]];
-//    _string14 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_retained_comment"]];
-//    _string15 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"case_start_date"]];
-   
-//    _userInfoToPass = [[NSMutableDictionary alloc]initWithObjectsAndKeys:_string1 ,@"user_id",_string2,@"user_security_hash",_string3 ,@"case_number",_string4 ,@"case_title",_string5 ,@"case_type",_string6 ,@"case_court_name",_string7 ,@"case_position_status",_string8 ,@"case_previous_date",_string9 ,@"case_next_date",_string10 ,@"case_opposite_counselor_name",_string11 ,@"case_opposite_counselor_contact",_string12 ,@"case_retained_name",_string13 ,@"case_retained_contact",_string14 ,@"case_retained_comment",_string15 ,@"case_start_date", nil];
       _userInfoToPass = [[NSMutableDictionary alloc]initWithObjectsAndKeys:_string1 ,@"user_id",_string2,@"user_security_hash", nil];
     [self performSegueWithIdentifier:@"sw_rear" sender:self];
 }

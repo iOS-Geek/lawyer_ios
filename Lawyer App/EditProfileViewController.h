@@ -13,10 +13,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *stateTextField;
 @property (weak, nonatomic) IBOutlet UITextField *userLocationTextField;
+@property (weak, nonatomic) IBOutlet UITextField *userSpecialisationTextField;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong , nonatomic) IBOutlet NSLayoutConstraint *imageTopConstraint;
 
-- (IBAction)sideBarButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *menuButton;
+
 - (IBAction)submitButtonAction:(id)sender;
 @end
