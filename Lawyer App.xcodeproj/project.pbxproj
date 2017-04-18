@@ -13,6 +13,12 @@
 		442D0FFC1DE2F3DA00CD0658 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FFB1DE2F3DA00CD0658 /* Assets.xcassets */; };
 		442D0FFF1DE2F3DA00CD0658 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 442D0FFD1DE2F3DA00CD0658 /* LaunchScreen.storyboard */; };
 		4444DF9D1DFEC8C100D06F65 /* confirmMobileNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4444DF9C1DFEC8C100D06F65 /* confirmMobileNumberViewController.m */; };
+		445AA4251E2394E800D59DB4 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 445AA4241E2394E800D59DB4 /* MessageUI.framework */; };
+		446131491E2898B6009AD989 /* CaseStatusSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 446131481E2898B6009AD989 /* CaseStatusSearchViewController.m */; };
+		4461314C1E28DD0F009AD989 /* ViewUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4461314B1E28DD0F009AD989 /* ViewUserViewController.m */; };
+		4461314F1E28EF20009AD989 /* AdvancedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4461314E1E28EF20009AD989 /* AdvancedSearchViewController.m */; };
+		446AE9C61E0E2E7400F22942 /* CaseListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 446AE9C51E0E2E7400F22942 /* CaseListTableViewCell.m */; };
+		447442761E265CAF00BE3C1F /* MasterUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 447442751E265CAF00BE3C1F /* MasterUserViewController.m */; };
 		44BD0EEB1DEFDE0300D81758 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EEA1DEFDE0300D81758 /* LoginViewController.m */; };
 		44BD0EEE1DEFDE1900D81758 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EED1DEFDE1900D81758 /* RegisterViewController.m */; };
 		44BD0EF11DEFDE2B00D81758 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BD0EF01DEFDE2B00D81758 /* HomeViewController.m */; };
@@ -55,6 +61,17 @@
 		442D10001DE2F3DA00CD0658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4444DF9B1DFEC8C100D06F65 /* confirmMobileNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = confirmMobileNumberViewController.h; sourceTree = "<group>"; };
 		4444DF9C1DFEC8C100D06F65 /* confirmMobileNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = confirmMobileNumberViewController.m; sourceTree = "<group>"; };
+		445AA4241E2394E800D59DB4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		446131471E2898B6009AD989 /* CaseStatusSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaseStatusSearchViewController.h; sourceTree = "<group>"; };
+		446131481E2898B6009AD989 /* CaseStatusSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaseStatusSearchViewController.m; sourceTree = "<group>"; };
+		4461314A1E28DD0F009AD989 /* ViewUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUserViewController.h; sourceTree = "<group>"; };
+		4461314B1E28DD0F009AD989 /* ViewUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUserViewController.m; sourceTree = "<group>"; };
+		4461314D1E28EF20009AD989 /* AdvancedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedSearchViewController.h; sourceTree = "<group>"; };
+		4461314E1E28EF20009AD989 /* AdvancedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedSearchViewController.m; sourceTree = "<group>"; };
+		446AE9C41E0E2E7400F22942 /* CaseListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaseListTableViewCell.h; sourceTree = "<group>"; };
+		446AE9C51E0E2E7400F22942 /* CaseListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaseListTableViewCell.m; sourceTree = "<group>"; };
+		447442741E265CAF00BE3C1F /* MasterUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterUserViewController.h; sourceTree = "<group>"; };
+		447442751E265CAF00BE3C1F /* MasterUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterUserViewController.m; sourceTree = "<group>"; };
 		44BD0EE91DEFDDF600D81758 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		44BD0EEA1DEFDE0300D81758 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		44BD0EEC1DEFDE1100D81758 /* RegisterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -120,6 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				445AA4251E2394E800D59DB4 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +149,7 @@
 			children = (
 				442D0FEE1DE2F3DA00CD0658 /* Lawyer App */,
 				442D0FED1DE2F3DA00CD0658 /* Products */,
+				445AA4231E2394E800D59DB4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,6 +175,14 @@
 				4444DF9B1DFEC8C100D06F65 /* confirmMobileNumberViewController.h */,
 				4444DF9C1DFEC8C100D06F65 /* confirmMobileNumberViewController.m */,
 				442D0FF81DE2F3DA00CD0658 /* Main.storyboard */,
+				4461314D1E28EF20009AD989 /* AdvancedSearchViewController.h */,
+				4461314E1E28EF20009AD989 /* AdvancedSearchViewController.m */,
+				4461314A1E28DD0F009AD989 /* ViewUserViewController.h */,
+				4461314B1E28DD0F009AD989 /* ViewUserViewController.m */,
+				446131471E2898B6009AD989 /* CaseStatusSearchViewController.h */,
+				446131481E2898B6009AD989 /* CaseStatusSearchViewController.m */,
+				447442741E265CAF00BE3C1F /* MasterUserViewController.h */,
+				447442751E265CAF00BE3C1F /* MasterUserViewController.m */,
 				44BD0EEF1DEFDE2400D81758 /* HomeViewController.h */,
 				44BD0EF01DEFDE2B00D81758 /* HomeViewController.m */,
 				44BD0EF31DEFDE3A00D81758 /* EditProfileViewController.m */,
@@ -164,6 +191,8 @@
 				44BD0EF61DEFDE4E00D81758 /* ChangePasswordViewController.m */,
 				44BD0EF81DEFDE5B00D81758 /* CaseListViewController.h */,
 				44BD0EF91DEFDE6400D81758 /* CaseListViewController.m */,
+				446AE9C41E0E2E7400F22942 /* CaseListTableViewCell.h */,
+				446AE9C51E0E2E7400F22942 /* CaseListTableViewCell.m */,
 				44BD0EFB1DEFDE6F00D81758 /* CaseDetailViewController.h */,
 				44BD0EFC1DEFDE7A00D81758 /* CaseDetailViewController.m */,
 				44BD0EFE1DEFDE8200D81758 /* AddCommentViewController.h */,
@@ -193,6 +222,14 @@
 				442D0FF01DE2F3DA00CD0658 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		445AA4231E2394E800D59DB4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				445AA4241E2394E800D59DB4 /* MessageUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D69659371E098BBC00201467 /* Calendar Library */ = {
@@ -309,14 +346,18 @@
 				D69659331E098BB200201467 /* FSCalendarHeaderView.m in Sources */,
 				D69659351E098BB200201467 /* FSCalendarStickyHeader.m in Sources */,
 				44BD0F0C1DEFDEDF00D81758 /* SidebarViewController.m in Sources */,
+				4461314C1E28DD0F009AD989 /* ViewUserViewController.m in Sources */,
+				446AE9C61E0E2E7400F22942 /* CaseListTableViewCell.m in Sources */,
 				44BD0EEE1DEFDE1900D81758 /* RegisterViewController.m in Sources */,
 				D69659281E098BB200201467 /* FSCalendar.m in Sources */,
 				D696592D1E098BB200201467 /* FSCalendarCell.m in Sources */,
 				44BD0EF71DEFDE4E00D81758 /* ChangePasswordViewController.m in Sources */,
 				44BD0F001DEFDE8C00D81758 /* AddCommentViewController.m in Sources */,
 				D696592E1E098BB200201467 /* FSCalendarCollectionView.m in Sources */,
+				447442761E265CAF00BE3C1F /* MasterUserViewController.m in Sources */,
 				D69659361E098BB200201467 /* FSCalendarWeekdayView.m in Sources */,
 				D696592F1E098BB200201467 /* FSCalendarCollectionViewLayout.m in Sources */,
+				4461314F1E28EF20009AD989 /* AdvancedSearchViewController.m in Sources */,
 				44F96CE41E015AEA00DAAFEC /* AboutUsViewController.m in Sources */,
 				D696592B1E098BB200201467 /* FSCalendarAppearance.m in Sources */,
 				44BD0F091DEFDED000D81758 /* RequestManager.m in Sources */,
@@ -334,6 +375,7 @@
 				D69659291E098BB200201467 /* FSCalendar+Deprecated.m in Sources */,
 				4444DF9D1DFEC8C100D06F65 /* confirmMobileNumberViewController.m in Sources */,
 				D69659321E098BB200201467 /* FSCalendarExtensions.m in Sources */,
+				446131491E2898B6009AD989 /* CaseStatusSearchViewController.m in Sources */,
 				44BD0F031DEFDE9800D81758 /* AddCaseViewController.m in Sources */,
 				44BD0EF11DEFDE2B00D81758 /* HomeViewController.m in Sources */,
 				44BD0F061DEFDEB400D81758 /* ConfirmViewController.m in Sources */,
@@ -461,7 +503,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Brendan.Lawyer-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Lawyer App";
 			};
 			name = Debug;
 		};
@@ -474,7 +516,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Brendan.Lawyer-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Lawyer App";
 			};
 			name = Release;
 		};

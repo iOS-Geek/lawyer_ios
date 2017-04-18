@@ -191,10 +191,10 @@ typedef NS_ENUM(NSInteger, SWRevealToggleAnimationType)
 - (id)initWithRearViewController:(UIViewController *)rearViewController frontViewController:(UIViewController *)frontViewController;
 
 
-@property(strong) NSMutableDictionary *userInfoToAdd;
-@property(strong) NSMutableDictionary *userInfoToPass;
-@property(strong) NSMutableString *string1;
-@property(strong) NSMutableString  *string2;
+//@property(strong) NSMutableDictionary *userInfoToAdd;
+//@property(strong) NSMutableDictionary *userInfoToPass;
+//@property(strong) NSMutableString *string1;
+//@property(strong) NSMutableString  *string2;
 
 
 // Rear view controller, can be nil if not used

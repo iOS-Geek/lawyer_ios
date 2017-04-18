@@ -15,11 +15,10 @@
 
 @property (nonatomic,weak) NSMutableDictionary *userInfo;
 @property (weak, nonatomic) IBOutlet UIImageView *addButtonImage;
-
 @property (strong)  NSMutableDictionary *caseInfoToRecive;
-
-
-
 //- (IBAction)buttonAction:(id)sender;
+
+- (IBAction)addCaseButtonAction:(id)sender;
+
 
 @end

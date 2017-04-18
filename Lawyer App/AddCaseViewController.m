@@ -11,7 +11,7 @@
 #import "RequestManager.h"
 #import "HomeViewController.h"
 #define ACCEPTABLE_CHARECTERS @"0123456789"
-@interface AddCaseViewController ()<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate>
+@interface AddCaseViewController ()<UITextFieldDelegate,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate,UIScrollViewDelegate,UIPickerViewDataSource>
 {
     NSMutableDictionary *caseInfoToPass;
     NSMutableDictionary *myDict;
@@ -19,7 +19,10 @@
     UIColor * lightCyanColor;
     UIColor * clearColor;
     NSInteger selectedRow;
-   
+    UILabel *placeholderLable;
+    UIPickerView *myPicker;
+    UIToolbar *toolBar;
+    
 }
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *caseTypeViewHeightConst;
@@ -32,43 +35,48 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-   
+
+    
+    _scrollView.delegate = self;
     
      self.navigationController.navigationBar.hidden = YES;
      caseTitleArray = [[NSArray alloc] initWithObjects:@"Criminal",@"Civil",@"others", nil];
     
     lightCyanColor = [UIColor colorWithRed:69/255.0 green:174/255.0 blue:202/255.0 alpha:1];
     clearColor =  [UIColor colorWithRed:186/255.0 green:186/255.0 blue:186/255.0 alpha:1];
+    
    
-    // Drop Down Button
+   // Drop Down Button
     _caseTypeTextField.rightViewMode = UITextFieldViewModeAlways;
-    UIButton *dropdownButtonAction =[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 12, 12)];
-    [dropdownButtonAction addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
+     UIButton *dropdownButtonAction =[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 14, 14)];
+    [dropdownButtonAction addTarget:self action:@selector(openPickerView:) forControlEvents:UIControlEventTouchUpInside];
     [dropdownButtonAction setImage:[UIImage imageNamed:@"dropDown"] forState:UIControlStateNormal];
     _caseTypeTextField.rightView = dropdownButtonAction;
-   
-    // Picker View
-    UIPickerView *myPicker = [[UIPickerView alloc]init];
+    
+    // picker view
+    myPicker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 216)];
+    myPicker.backgroundColor = [UIColor lightGrayColor];
     myPicker.dataSource = self;
     myPicker.delegate = self;
     
-    UIToolbar *toolBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,320,44)];
+     toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     [toolBar setBarTintColor:[UIColor grayColor]];
     [toolBar setBarStyle:UIBarStyleDefault];
     
     UIBarButtonItem *flexButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    UIBarButtonItem *barButtonDone =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(changeDateFromLabel:)];
+    UIBarButtonItem *barButtonDone =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(updatePickerData:)];
     NSArray *itemsArray = [NSArray arrayWithObjects:flexButton, barButtonDone, nil];
     [toolBar setItems:itemsArray];
     barButtonDone.tintColor=[UIColor blackColor];
     
-     _caseTypeTextField.inputView = myPicker;
-     _caseTypeTextField.inputAccessoryView = toolBar;
+    self.caseTypeTextField.inputView = myPicker;
+    self.caseTypeTextField.inputAccessoryView = toolBar;
     
-  
+   
     //  default date
     NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"dd-MM-yyyy"];
+    [formatter setDateFormat:@"dd-MM-YYYY"];
+    
     [_startDateTextField setPlaceholder:[NSString stringWithFormat:@"%@",[formatter stringFromDate:[NSDate date]]]];
     [_previousDateTextField setPlaceholder:[NSString stringWithFormat:@"%@",[formatter stringFromDate:[NSDate date]]]];
     [_nextDateTextField setPlaceholder:[NSString stringWithFormat:@"%@",[formatter stringFromDate:[NSDate date]]]];
@@ -87,12 +95,10 @@
      _previousDateTextField.delegate =self;
      _startDateTextField.delegate =self;
      _caseTitleTextField.delegate =self;
-     _caseAmountTextField.delegate = self;
      _popUpCaseTypeTextField.delegate = self;
-    _addCommentTextView.delegate = self;
+     _addCommentTextView.delegate = self;
     
 
-    
      caseInfoToPass =[[NSMutableDictionary alloc]init];
      myDict =[[NSMutableDictionary alloc]init];
     
@@ -103,49 +109,131 @@
    
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(keyboardDidShow:)name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+    
    
     // Date Picker
-    UIDatePicker *datePicker = [[UIDatePicker alloc]init];
-    datePicker.datePickerMode = UIDatePickerModeDate;
+     UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0,0,320,180)];
+     datePicker.datePickerMode = UIDatePickerModeDate;
     _startDateTextField.inputView = datePicker;
     _previousDateTextField.inputView = datePicker;
     _nextDateTextField.inputView = datePicker;
 
     
-    UIToolbar *toolBar1= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,320,44)];
-    [toolBar1 setBarStyle:UIBarStyleDefault];
-    [toolBar1 setBarTintColor:[UIColor grayColor]];
+    UIToolbar *toolBarView= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,320,44)];
+    [toolBarView setBarStyle:UIBarStyleDefault];
+    [toolBarView setBarTintColor:[UIColor grayColor]];
 
-    UIBarButtonItem *flexButton1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *flexButon = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     UIBarButtonItem *doneButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(updateText:)];
-    NSArray *itemsArray1 = [NSArray arrayWithObjects:flexButton1, doneButton, nil];
+    NSArray *itemsArr = [NSArray arrayWithObjects:flexButon, doneButton, nil];
     
-    [toolBar1 setItems:itemsArray1];
-    doneButton.tintColor=[UIColor blackColor];
+     [toolBarView setItems:itemsArr];
+     doneButton.tintColor=[UIColor blackColor];
     
-    _startDateTextField.inputAccessoryView = toolBar1;
-    _previousDateTextField.inputAccessoryView = toolBar1;
-    _nextDateTextField.inputAccessoryView = toolBar1;
+    _startDateTextField.inputAccessoryView = toolBarView;
+    _previousDateTextField.inputAccessoryView = toolBarView;
+    _nextDateTextField.inputAccessoryView = toolBarView;
+   
     _caseTypeViewHeightConst.constant = 0;
     [self.view layoutIfNeeded];
+    
+    
+    // text view placeholder label
+      placeholderLable = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0,_addCommentTextView.frame.size.width - 10.0, 34.0)];
+     [placeholderLable setText:kDescriptionPlaceHolder];
+     [placeholderLable setBackgroundColor:[UIColor clearColor]];
+     [placeholderLable setTextColor:[UIColor lightGrayColor]];
+     _addCommentTextView.delegate = self;
+    
+     [_addCommentTextView addSubview:placeholderLable];
+    
+}
+-(void)openPickerView:(id)sender
+{
+    myPicker = [[UIPickerView alloc]initWithFrame:CGRectMake(0,self.view.frame.size.width,self.view.frame.size.width,240)];
+    myPicker.backgroundColor = [UIColor lightGrayColor];
+    myPicker.dataSource = self;
+    myPicker.delegate = self;
+    
+    toolBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,self.view.frame.size.width,self.view.frame.size.width,44)];
+    [toolBar setBarTintColor:[UIColor grayColor]];
+    [toolBar setBarStyle:UIBarStyleDefault];
+    
+    UIBarButtonItem *barButtonCancel =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dissmissPicker:)];
+    UIBarButtonItem *flexButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *barButtonDone =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(updatePickerData:)];
+    NSArray *itemsArray = [NSArray arrayWithObjects:barButtonCancel,flexButton, barButtonDone, nil];
+    [toolBar setItems:itemsArray];
+    barButtonDone.tintColor=[UIColor blackColor];
+    
+
+          [self.scrollView addSubview:myPicker];
+          [self.scrollView addSubview:toolBar];
+    
+}
+// Dissmiss Picker view
+-(void)dissmissPicker:(id)sender{
+     
+     [myPicker removeFromSuperview];
+     [toolBar removeFromSuperview];
 
 }
+# pragma text view delegates
+- (void)textViewDidEndEditing:(UITextView *)theTextView
+{
+    _startDateHeightConst.constant = 20;
+    
+    [self.view setNeedsUpdateConstraints];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+    
+    if (![_addCommentTextView hasText]) {
+        placeholderLable.hidden = NO;
+    }
+      //    _addCommentTextView = nil;
+}
+-(void) textViewDidChange:(UITextView *)textView
+{
+    
+    if(![textView hasText]) {
+        placeholderLable.hidden = NO;
+    }
+    else{
+        placeholderLable.hidden = YES;
+    }
+    CGFloat fixedWidth = textView.frame.size.width;
+    CGSize newSize = [textView sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+    _addCommentTextViewHeightConst.constant = newSize.height;
+    [self.view layoutIfNeeded];
+}
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    
+     _startDateHeightConst.constant= -340;
+    [_scrollView setNeedsUpdateConstraints];
+    [UIView animateWithDuration:0.2 animations:^{
+        [_scrollView layoutIfNeeded];
+    }];
+    
+    if([_addCommentTextView isFirstResponder]){
+        [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+        [_commentView setBackgroundColor:lightCyanColor];
+    }
+         //_addCommentTextView = textView;
+}
+
+ // case Type hidden text field
 -(void)viewWillAppear:(BOOL)animated{
      _caseTypeViewHeightConst.constant = 0;
-    [_contentView layoutIfNeeded];
-    CGRect frame = _hideAndShowView.frame;
-    frame.size.height = 0;
-    _hideAndShowView.frame = frame;
+     [_contentView layoutIfNeeded];
+     CGRect frame = _hideAndShowView.frame;
+     frame.size.height = 0;
+     _hideAndShowView.frame = frame;
 
-}
--(void)btnClicked:(id)seder
-{
-
-
-}
--(void)dismissKeyboard {
+ }
+ -(void)dismissKeyboard {
     
-    [self.view endEditing:true];
+     [self.view endEditing:true];
 }
 # pragma Picker View
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -159,99 +247,242 @@
     return [caseTitleArray objectAtIndex:row];
 }
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    selectedRow = row;
     
-
+      selectedRow = row;
 }
-- (void)textViewDidChange:(UITextView *)textView
+-(void)updatePickerData:(id)sender
 {
-    CGFloat fixedWidth = textView.frame.size.width;
-    CGSize newSize = [textView sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
-//    CGRect newFrame = textView.frame;
-//    newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
-//    textView.frame = newFrame;
-    _addCommentTextViewHeightConst.constant = newSize.height;
-    [self.view layoutIfNeeded];
-}
-
--(void)changeDateFromLabel:(id)sender
-{
-   _caseTypeTextField.text= caseTitleArray[selectedRow];
-    if(selectedRow ==2){
-        _caseTypeTextField.text= @"";
-        _caseTypeViewHeightConst.constant = 46;
-        [_contentView layoutIfNeeded];
-        CGRect frame = _hideAndShowView.frame;
-        frame.size.height = 46;
+    if(selectedRow == 0){
+    _caseTypeTextField.text= caseTitleArray[selectedRow];
+    _caseTypeViewHeightConst.constant = 0;
+    [_contentView layoutIfNeeded];
+    CGRect frame = _hideAndShowView.frame;
+    frame.size.height = 0;
         _hideAndShowView.frame = frame;
     }
-    [[self view] endEditing:YES];
+     else if(selectedRow == 1){
+        _caseTypeTextField.text= caseTitleArray[selectedRow];
+        _caseTypeViewHeightConst.constant = 0;
+        [_contentView layoutIfNeeded];
+        CGRect frame = _hideAndShowView.frame;
+        frame.size.height = 0;
+        _hideAndShowView.frame = frame;
+    }
+     else if(selectedRow ==2){
+        
+             _caseTypeTextField.text =caseTitleArray[selectedRow];
+             _caseTypeViewHeightConst.constant = 46;
+             [_contentView layoutIfNeeded];
+              CGRect frame = _hideAndShowView.frame;
+              frame.size.height = 46;
+              _hideAndShowView.frame = frame;
+        
+        }
+          [[self view] endEditing:YES];
+    }
+ // highlited color of text field
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    switch (textField.tag) {
+        case 1:
+            [_startDateView setBackgroundColor:lightCyanColor];
+            [_previousDateView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+
+            break;
+        case 2:
+            [_previousDateView setBackgroundColor:lightCyanColor];
+            [_startDateView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+
+            
+            break;
+        case 3:
+            [_caseTitleView setBackgroundColor:lightCyanColor];
+            [_previousDateView setBackgroundColor:clearColor];
+            [_startDateView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+
+
+            break;
+        case 15:
+            [_popUpCaseTypeView setBackgroundColor:lightCyanColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_startDateView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+
+
+            break; 
+        case 6:
+            [_judgeNameView setBackgroundColor:lightCyanColor];
+              [_popUpCaseTypeView setBackgroundColor:clearColor];
+              [_caseTitleView setBackgroundColor:clearColor];
+              [_caseNumberView setBackgroundColor:clearColor];
+              [_popUpCaseTypeView setBackgroundColor:clearColor];
+              [_caseStatusView setBackgroundColor:clearColor];
+              [_nextDateView setBackgroundColor:clearColor];
+              [_mobileNumberView setBackgroundColor:clearColor];
+              [_retainedView setBackgroundColor:clearColor];
+              [_oppositeCounselView setBackgroundColor:clearColor];
+              [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+              [_previousDateView setBackgroundColor:clearColor];
+
+            break;
+        case 7:
+            [_caseNumberView setBackgroundColor:lightCyanColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+
+
+            break;
+        case 8:
+            [_caseStatusView setBackgroundColor:lightCyanColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+
+
+            break;
+        case 9:
+            [_nextDateView setBackgroundColor:lightCyanColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+
+
+           break;
+        case 10:
+            [_retainedView setBackgroundColor:lightCyanColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+            break;
+        case 11:
+            [_mobileNumberView setBackgroundColor:lightCyanColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+
+            break;
+        case 12:
+            [_oppositeCounselView setBackgroundColor:lightCyanColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+
+
+            break;
+        case 13:
+            [_oppositeCounselMobileNumberView setBackgroundColor:lightCyanColor];
+            [_oppositeCounselView setBackgroundColor:clearColor];
+            [_mobileNumberView setBackgroundColor:clearColor];
+            [_retainedView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_caseStatusView setBackgroundColor:clearColor];
+            [_caseNumberView setBackgroundColor:clearColor];
+            [_judgeNameView setBackgroundColor:clearColor];
+            [_startDateView setBackgroundColor:clearColor];
+            [_nextDateView setBackgroundColor:clearColor];
+            [_popUpCaseTypeView setBackgroundColor:clearColor];
+            [_caseTitleView setBackgroundColor:clearColor];
+            [_previousDateView setBackgroundColor:clearColor];
+          
+
+
+            break;
+        default:
+            break;
+    }
+    return YES;
 }
 # pragma keyboard handling
 - (void)textFieldDidBeginEditing:(UITextField *)sender
 {
+    _activeField = sender;
     
-    if([_previousDateTextField isFirstResponder]){
-        [_startDateView setBackgroundColor:clearColor];
-        [_previousDateView setBackgroundColor:lightCyanColor];
-    }
-    else if([_caseTitleTextField isFirstResponder]){
-        [_previousDateView setBackgroundColor:clearColor];
-        [_caseTitleView setBackgroundColor:lightCyanColor];
-    }
-    else if([_caseAmountTextField isFirstResponder]){
-        [_caseTitleView setBackgroundColor:clearColor];
-         [_popUpCaseTypeView setBackgroundColor:clearColor];
-        [_amountView setBackgroundColor:lightCyanColor];
-    }
-    else if([_judgeNameTextField isFirstResponder]){
-        [_amountView setBackgroundColor:clearColor];
-        [_judgeNameView setBackgroundColor:lightCyanColor];
-    }
-    else if([_caseNumberTextField isFirstResponder]){
-        [_judgeNameView setBackgroundColor:clearColor];
-        [_caseNumberView setBackgroundColor:lightCyanColor];
-    }
-    else if([_caseStatusTextField isFirstResponder]){
-        [_caseNumberView setBackgroundColor:clearColor];
-        [_caseStatusView setBackgroundColor:lightCyanColor];
-    }
-    else if([_nextDateTextField isFirstResponder]){
-        [_caseStatusView setBackgroundColor:clearColor];
-        [_nextDateView setBackgroundColor:lightCyanColor];
-    }
-    else if([_caseRetainedNameTextField isFirstResponder]){
-        [_nextDateView setBackgroundColor:clearColor];
-        [_retainedView setBackgroundColor:lightCyanColor];
-    }
-    else if([_caseReatainedContectTextField isFirstResponder]){
-        [_retainedView setBackgroundColor:clearColor];
-        [_mobileNumberView setBackgroundColor:lightCyanColor];
-    }
-    else if([_oppositeCounselNameTextField isFirstResponder]){
-        [_mobileNumberView setBackgroundColor:clearColor];
-        [_oppositeCounselView setBackgroundColor:lightCyanColor];
-    }
-    else if([_oppositeCounselContectTextField isFirstResponder]){
-        [_oppositeCounselView setBackgroundColor:clearColor];
-        [_oppositeCounselMobileNumberView setBackgroundColor:lightCyanColor];
-    }
-    else if([_addCommentTextView isFirstResponder]){
-        [_oppositeCounselMobileNumberView setBackgroundColor:clearColor];
-        [_commentView setBackgroundColor:lightCyanColor];
-        }
-    else if([_popUpCaseTypeTextField isFirstResponder]){
-        [_caseTitleView setBackgroundColor:clearColor];
-        [_popUpCaseTypeView setBackgroundColor:lightCyanColor];
-    }
-    else {
-        [_commentView setBackgroundColor:clearColor];
-        }
-        _activeField = sender;
 }
 - (void)textFieldDidEndEditing:(UITextField *)sender
 {
-    
     _activeField = nil;
 }
 - (void)keyboardDidShow:(NSNotification *)notification
@@ -267,6 +498,7 @@
     aRect.size.height -= kbRect.size.height;
     if (!CGRectContainsPoint(aRect, _activeField.frame.origin) ) {
         [_scrollView scrollRectToVisible:_activeField.frame animated:YES];
+        
     }
 }
 - (void)keyboardWillBeHidden:(NSNotification *)notification
@@ -282,21 +514,36 @@
     NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"YYYY-MM-dd"];
     
+    
     if([_startDateTextField isFirstResponder]) {
+        
         _startDateTextField.text = [NSString stringWithFormat:@"%@",[formatter stringFromDate:picker.date]];
+        _startDateTextField.tintColor = [UIColor clearColor];
+        
         [_startDateTextField resignFirstResponder];
     }
+    
     else if([_previousDateTextField isFirstResponder]){
         _previousDateTextField.text = [NSString stringWithFormat:@"%@",[formatter stringFromDate:picker.date]];
+         _previousDateTextField.tintColor = [UIColor clearColor];
         [_previousDateTextField resignFirstResponder];
     }
     else if([_nextDateTextField isFirstResponder]){
         _nextDateTextField.text = [NSString stringWithFormat:@"%@",[formatter stringFromDate:picker.date]];
-        [_nextDateTextField resignFirstResponder];
+         _nextDateTextField.tintColor = [UIColor clearColor];
+         [_nextDateTextField resignFirstResponder];
+      
     }
     
 }
-
+// Text View Delegate
+- (BOOL)textViewShouldReturn:(UITextView *)textView
+{
+    if (_addCommentTextView.tag == 14) {
+        [_addCommentTextView resignFirstResponder];
+    }
+    return YES;
+}
 # pragma Textfield Delegate METHODS
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -310,12 +557,9 @@
         [_caseTypeTextField becomeFirstResponder];
     }
     else if (textField.tag == 4) {
-        [_caseAmountTextField becomeFirstResponder];
+        [_judgeNameTextField becomeFirstResponder];
     }
     else if (textField.tag == 15) {
-        [_caseAmountTextField becomeFirstResponder];
-    }
-    else if (textField.tag == 5) {
         [_judgeNameTextField becomeFirstResponder];
     }
     else if (textField.tag == 6) {
@@ -344,12 +588,9 @@
         [self.scrollView setContentOffset:bottomOffset animated:YES];
         [_addCommentTextView becomeFirstResponder];
     }
-    else if (_addCommentTextView.tag == 14) {
-        [_addCommentTextView resignFirstResponder];
-    }
-    
-   return YES;
+    return YES;
 }
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
     if(textField.tag == 11){
@@ -379,10 +620,24 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)addCaseButtonAction:(id)sender {
-   
     
-    myDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"] ,@"user_id",[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_user_security_hash"],@"user_security_hash",_startDateTextField.text ,@"case_start_date",_previousDateTextField.text,@"case_previous_date",_caseTitleTextField.text ,@"case_title",_caseTypeTextField.text,@"case_type",_judgeNameTextField.text,@"case_court_name",_caseNumberTextField.text,@"case_number",_caseStatusTextField.text,@"case_position_status",_nextDateTextField.text,@"case_next_date",_caseRetainedNameTextField.text,@"case_retained_name",_caseReatainedContectTextField.text,@"case_retained_contact",_oppositeCounselNameTextField.text,@"case_opposite_counselor_name",_oppositeCounselContectTextField.text,@"case_opposite_counselor_contact",_addCommentTextView.text,@"case_detail_comment", nil];
-    NSLog(@"%@",_startDateTextField.text);
+    NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+
+    if ([_startDateTextField.text isEqualToString:@""]){
+        
+        _startDateTextField.text = [NSString stringWithFormat:@"%@",[formatter stringFromDate:[NSDate date]]];
+        _startDateTextField.textColor = [UIColor clearColor];
+    }
+    if([_caseTypeTextField.text isEqualToString:@"others"]){
+    
+         _caseTypeTextField.text = _popUpCaseTypeTextField.text;
+         _caseTypeTextField.textColor = [UIColor clearColor];
+    }
+    
+   myDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"] ,@"user_id",[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_user_security_hash"],@"user_security_hash",_startDateTextField.text ,@"case_start_date",_previousDateTextField.text,@"case_previous_date",_caseTitleTextField.text ,@"case_title",_caseTypeTextField.text,@"case_type",_judgeNameTextField.text,@"case_court_name",_caseNumberTextField.text,@"case_number",_caseStatusTextField.text,@"case_position_status",_nextDateTextField.text,@"case_next_date",_caseRetainedNameTextField.text,@"case_retained_name",_caseReatainedContectTextField.text,@"case_retained_contact",_oppositeCounselNameTextField.text,@"case_opposite_counselor_name",_oppositeCounselContectTextField.text,@"case_opposite_counselor_contact",_addCommentTextView.text,@"case_detail_comment", nil];
+  
+       NSLog(@" dictionary %@",myDict);
      
        [RequestManager getFromServer:@"add_case" parameters:myDict completionHandler:^(NSDictionary *responseDict) {
         
@@ -391,19 +646,23 @@
             return ;
         }
         else{
-            if ([[responseDict objectForKey:@"code"] isEqualToString:@"0"]) {
+             if ([[responseDict objectForKey:@"code"] isEqualToString:@"0"]) {
                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                 return;
             }
             
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
-             //[self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+           // [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                   NSLog(@" add case status %@", responseDict);
                 
                 [caseInfoToPass addEntriesFromDictionary:myDict];
-              [self performSegueWithIdentifier:@"Home Screen" sender:self];
-                
-            }
+            
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                SWRevealViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"UserLoggedIn"];
+                // vc.caseInfoToRecive =caseInfoToPass;
+                [self presentViewController:vc animated:YES completion:nil];
+              
+                }
         }
     }]; //add case api ends
 }
@@ -421,15 +680,6 @@
     return [NSString stringWithFormat:@"%@-%@-%@",myYearString,myMonthString,dateString];
     
 }
-
-#pragma segue methods
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"confirm screen"]) {
-        //pass info to next screen
-        HomeViewController *vc = (HomeViewController *)segue.destinationViewController;
-        vc.caseInfoToRecive =caseInfoToPass;
-    }
-}
 # pragma alert Methods
 -(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
     title = [title stringByReplacingOccurrencesOfString:@"|" withString:@""];
@@ -441,7 +691,10 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 - (IBAction)backButtonAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"UserLoggedIn"];
+    [self presentViewController:vc animated:YES completion:nil];
+  
 }
-
 @end

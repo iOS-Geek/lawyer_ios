@@ -9,15 +9,17 @@
 #import "CaseListViewController.h"
 #import "AppDelegate.h"
 #import "RequestManager.h"
-//#import "TableViewCell.h"
+#import "SWRevealViewController.h"
+#import "CaseListTableViewCell.h"
+#import "CaseDetailViewController.h"
+#import "AddCaseViewController.h"
+
 @interface CaseListViewController ()<UITableViewDelegate,UITableViewDataSource>
-{
-   
-    NSMutableDictionary *myDict;
-    NSMutableDictionary *caseInfo;
-    NSMutableArray *dictAllKeys;
- 
-}
+
+  {
+    NSMutableDictionary *caseInformationDict;
+      NSString* stringToShow;
+  }
 @end
 
 @implementation CaseListViewController
@@ -25,44 +27,65 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _addButtonView.layer.cornerRadius =self.addButtonView.frame.size.width/2;
-    _addButtonView.clipsToBounds = YES;
-   
-    myDict = [[NSMutableDictionary alloc]init];
-    caseInfo = [[NSMutableDictionary alloc]init];
-  
+           _addButtonView.layer.cornerRadius =self.addButtonView.frame.size.width/2;
+           _addButtonView.clipsToBounds = YES;
+    
+           NSLog(@"user case info  - %@",_userCaseInfo);
+           caseInformationDict = [[NSMutableDictionary alloc]init];
+    
+   // date format
+     NSDateFormatter *format = [[NSDateFormatter alloc] init];
+     [format setDateFormat:@"YYYY-MM-dd"];
+     NSDate *date = [format dateFromString:_stringToPass];
+     [format setDateFormat:@"dd-MMM-YYYY"];
+     stringToShow = [format stringFromDate:date];
+    
+    // table view  footer
+      _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     return 1;
 }
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
    
-    return dictAllKeys.count;
+    return _userCaseInfo.count;
     
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text =[[dictAllKeys objectAtIndex:indexPath.row] objectForKey:@"case_title"];
+    CaseListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.caseHearingDateLable.text =stringToShow;
+    cell.caseTitleLable.text =[[_userCaseInfo objectAtIndex:indexPath.row] objectForKey:@"case_title"];
     return cell;
+    
 }
 
-//-(void)showBasicAlert:(NSString*)title Message:(NSString *)message{
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        
-//    }];
-//    [alert addAction:okAction];
-//    [self presentViewController:alert animated:YES completion:nil];
-//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)addCaseButtonAction:(id)sender {
-    [self performSegueWithIdentifier:@"add cases" sender:self];
+   
+    // [self performSegueWithIdentifier:@"add case screen" sender:self];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"addCaseScreen"];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [caseInformationDict  addEntriesFromDictionary:[_userCaseInfo objectAtIndex:indexPath.row]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    CaseDetailViewController *viewController = (CaseDetailViewController *)[storyboard instantiateViewControllerWithIdentifier:@"caseDetailScreen"];
+    viewController.userCaseInfoDict =caseInformationDict;
+    [self presentViewController:viewController animated:YES completion:nil];
+   
+}
+- (IBAction)backButtonAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"UserLoggedIn"];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 @end

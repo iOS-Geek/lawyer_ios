@@ -13,4 +13,11 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 
+@property (weak, nonatomic) IBOutlet UIView *userProfileView;
+@property (weak, nonatomic) IBOutlet UIImageView *userProfileImage;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *userEmailLabel;
+
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *userProfileViewHeightConst;
 @end

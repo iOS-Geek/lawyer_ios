@@ -66,13 +66,15 @@
     }
 }
 - (IBAction)confirmButtonAction:(id)sender {
+   
+    NSLog(@" user id - %@",[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"]);
     
-    str1 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_id"]];
-    str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
+ // str1 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_id"]];
+  //  str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
     
     
     
-    sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_user_id"] ,@"user_id",[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_user_security_hash"],@"user_security_hash",_mobileNumberTextField.text,@"user_otp", nil];
+    sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"] ,@"user_id",[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_security_hash"],@"user_security_hash",_mobileNumberTextField.text,@"user_otp", nil];
     NSLog(@"%@", sampleDict);
     
     [RequestManager getFromServer:@"verify_otp" parameters:sampleDict completionHandler:^(NSDictionary *responseDict) {
@@ -88,7 +90,7 @@
             }
             
             if ([[responseDict valueForKey:@"code"] isEqualToString:@"1"]){
-                //              [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+            //  [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                 NSDictionary *dataDict = [responseDict valueForKey:@"data"];
                 [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
                 [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
@@ -123,11 +125,11 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)notRecivedYetButtonAction:(id)sender {
-    str1 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_id"]];
-    str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
+//    str1 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_id"]];
+//    str2 =[NSMutableString stringWithFormat:@"%@", [_userInfoToRecive objectForKey:@"user_security_hash"]];
     
     
-    sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:str1 ,@"user_id",str2,@"user_security_hash", nil];
+    sampleDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"] ,@"user_id",[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_security_hash"],@"user_security_hash", nil];
     NSLog(@"%@", sampleDict);
     [RequestManager getFromServer:@"resend_otp" parameters:sampleDict completionHandler:^(NSDictionary *responseDict) {
         

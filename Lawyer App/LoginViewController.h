@@ -28,5 +28,13 @@
 @property (weak, nonatomic) IBOutlet UITextField *businessUserMobileNumberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *businessUserPasswordTextField;
 
+//@property (nonatomic, strong)  UIButton *animationOption1;
+@property (nonatomic, assign) UIViewAnimationOptions animation1;
+@property (nonatomic, assign) BOOL animationInProgress;
 
+
+
+
+- (IBAction)forgotPasswordButtonAction:(id)sender;
+- (IBAction)notAUserButtonAction:(id)sender;
 @end

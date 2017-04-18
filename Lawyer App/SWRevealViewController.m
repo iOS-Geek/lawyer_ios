@@ -743,22 +743,22 @@ const int FrontViewPositionNone = 0xff;
     
     ///// * allocate dictionary * //////
     
-    _string1 =[[NSMutableString alloc]init];
-    _string2 =[[NSMutableString alloc]init];
-    
-    _string1 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_id"]];
-    _string2 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_security_hash"]];
-      _userInfoToPass = [[NSMutableDictionary alloc]initWithObjectsAndKeys:_string1 ,@"user_id",_string2,@"user_security_hash", nil];
-    [self performSegueWithIdentifier:@"sw_rear" sender:self];
+ //   _string1 =[[NSMutableString alloc]init];
+//    _string2 =[[NSMutableString alloc]init];
+//    
+//    _string1 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_id"]];
+//    _string2 = [NSMutableString stringWithFormat:@"%@", [_userInfo valueForKey:@"user_security_hash"]];
+//      _userInfoToPass = [[NSMutableDictionary alloc]initWithObjectsAndKeys:_string1 ,@"user_id",_string2,@"user_security_hash", nil];
+//    [self performSegueWithIdentifier:@"sw_rear" sender:self];
 }
 
 # pragma pass value to table view
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"sw_rear"]) {
-        SidebarViewController  *vc = ( SidebarViewController  *)segue.destinationViewController;
-        vc.userInfo = _userInfoToPass;
-    }
-}
+//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//    if ([[segue identifier] isEqualToString:@"sw_rear"]) {
+//        SidebarViewController  *vc = ( SidebarViewController  *)segue.destinationViewController;
+//        vc.userInfo = _userInfoToPass;
+//    }
+//}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

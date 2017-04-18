@@ -10,6 +10,7 @@
 #define IS_STANDARD_IPHONE_6_PLUS ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #define ACCEPTABLE_CHARECTERS @"0123456789"
 #import "RequestManager.h"
+#import "MasterUserViewController.h"
 
 @interface LoginViewController ()<UIScrollViewDelegate>
 
@@ -45,7 +46,7 @@
     _businessUserPasswordTextField.delegate = self;
     
     //store mobile number and password
-     dictWithUserMobileNumberAndPassword = [[NSMutableDictionary alloc]init];
+    dictWithUserMobileNumberAndPassword = [[NSMutableDictionary alloc]init];
     dictWithCorporateIdAndMobileNumberAndPassword = [[NSMutableDictionary alloc]init];
    
     //store response from server
@@ -55,32 +56,17 @@
      UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
      [self.view addGestureRecognizer:tap];
     
-
-
 }
+
 # pragma scroll view delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
    
-    //CGPoint translation = [scrollView.panGestureRecognizer translationInView:_dragableView.superview];
-   
-   // NSLog(@"%f",scrollView.contentOffset.x);
-//    if( translation.x > 0)
-//    {
-//       _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
-//                                         + translation.x/2, 89, 120, 2);
-//        
-//    }
-//    else
-//    {
-//        _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
-//                                         - translation.x/2, 89, 120, 2);
-//     
-//    }
-    if (scrollView.contentOffset.x == 0) {
-        _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
+   // dragable view as scroll indicator
+   if (scrollView.contentOffset.x == 0) {
+        _dragableView.frame = CGRectMake(_dragableView.bounds.origin.x+21
                                          - scrollView.contentOffset.x/2, 89, 120, 2);
     }else{
-        _dragableView.frame = CGRectMake(_dragableView.frame.origin.x
+        _dragableView.frame = CGRectMake(_dragableView.bounds.origin.x+21
                                          + scrollView.contentOffset.x/2, 89, 120, 2);
     }
     scrollDirectionDetermined = YES;
@@ -222,16 +208,47 @@
                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:nil];
                 return;
             }
+            if ([[responseDict objectForKey:@"code"] isEqualToString:@"2"]) {
+                
+               // [self showBasicAlert:[responseDict objectForKey:@"message"] Message:nil];
+                  NSDictionary *dataDictionary = [responseDict valueForKey:@"data"];
+                 [[NSUserDefaults standardUserDefaults]setObject:[dataDictionary valueForKey:@"user_id"] forKey:@"logged_user_id"];
+                 [[NSUserDefaults standardUserDefaults]setObject:[dataDictionary valueForKey:@"case_id"] forKey:@"logged_case_id"];
+                 [[NSUserDefaults standardUserDefaults]setObject:[dataDictionary valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+                 [[NSUserDefaults standardUserDefaults]setObject:[dataDictionary valueForKey:@"groups_id"] forKey:@"logged_groups_id"];
+                
+                NSLog(@"%@%@",[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"],[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_security_hash"]);
+               
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"confirmOtpScreen"];
+                [self presentViewController:vc animated:YES completion:nil];
+                
+            }
+
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]){
                  
-                  userInfoFromResponse = [responseDict objectForKey:@"data"];
-                  NSLog(@"info -%@",userInfoFromResponse);
+                  //userInfoFromResponse = [responseDict objectForKey:@"data"];
+                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+
+                 // NSLog(@"info -%@",userInfoFromResponse);
                 NSMutableDictionary * dictWithUserSessionLogininfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[responseDict objectForKey:@"data"] objectForKey:@"user_id"],@"user_id",[[responseDict objectForKey:@"data"] objectForKey:@"user_security_hash"],@"user_security_hash", nil];
+               
+                // store userID and Security hash
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"groups_id"] forKey:@"logged_groups_id"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_email"] forKey:@"logged_user_email"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_name"] forKey:@"logged_user_name"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"case_type"] forKey:@"logged_case_type"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"case_title"] forKey:@"logged_case_title"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"case_court_name"] forKey:@"logged_case_court_name"];
                 
+               
+//                NSLog(@"------- %@%@",[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_case_search_in"],[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_case_search_period"]);
                 [[NSUserDefaults standardUserDefaults] setObject:dictWithUserSessionLogininfo forKey:@"SessionLogininfo"];
                 [[NSUserDefaults standardUserDefaults]synchronize];
 
-          [self performSegueWithIdentifier:@"LoginSuccessful" sender:self];
+                [self performSegueWithIdentifier:@"LoginSuccessful" sender:self];
                 
                 }
            }
@@ -249,20 +266,20 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
  #pragma segue methods
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"LoginSuccessful"]) {
-        SWRevealViewController *vc = (SWRevealViewController *)segue.destinationViewController;
-        vc.userInfo = userInfoFromResponse;
-    }
-}
+//-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+//    if ([[segue identifier] isEqualToString:@"LoginSuccessful"]) {
+//        SWRevealViewController *vc = (SWRevealViewController *)segue.destinationViewController;
+//        vc.userInfo = userInfoFromResponse;
+//    }
+//}
 -(IBAction)unwindToLoginScreen:(UIStoryboardSegue*)segue{
     
 }
 - (IBAction)loginButtonActionForBusinessUser:(id)sender {
-     [dictWithCorporateIdAndMobileNumberAndPassword setObject:_corporateIdTextField.text forKey:@"user_corporate_id"];
+     [dictWithCorporateIdAndMobileNumberAndPassword setObject:_corporateIdTextField.text forKey:@"corporation_id"];
     [dictWithCorporateIdAndMobileNumberAndPassword setObject:_businessUserMobileNumberTextField.text forKey:@"user_login"];
     [dictWithCorporateIdAndMobileNumberAndPassword setObject:_businessUserPasswordTextField.text forKey:@"user_login_password"];
-    // "user_corporate_id" = 468252;
+   
     //check user on server to login
     [RequestManager getFromServer:@"login" parameters:dictWithCorporateIdAndMobileNumberAndPassword completionHandler:^(NSDictionary *responseDict) {
         
@@ -276,20 +293,38 @@
                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:nil];
                 return;
             }
+            
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]){
                 
-                userInfoFromResponse = [responseDict objectForKey:@"data"];
-                NSLog(@"info -%@",userInfoFromResponse);
+//               userInfoFromResponse = [responseDict objectForKey:@"data"];
+                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+              //  NSLog(@"info -%@",userInfoFromResponse);
                 NSMutableDictionary * dictWithUserSessionLogininfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[responseDict objectForKey:@"data"] objectForKey:@"user_id"],@"user_id",[[responseDict objectForKey:@"data"] objectForKey:@"user_security_hash"],@"user_security_hash", nil];
+                
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"groups_id"] forKey:@"logged_groups_id"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_email"] forKey:@"logged_user_email"];
+                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_name"] forKey:@"logged_user_name"];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:dictWithUserSessionLogininfo forKey:@"SessionLogininfo"];
                 [[NSUserDefaults standardUserDefaults]synchronize];
-                
-                [self performSegueWithIdentifier:@"LoginSuccessful" sender:self];
+               
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"master user"];
+                [self.navigationController pushViewController:vc animated:YES];
                 
             }
         }
     }]; // login api end
 }
+- (IBAction)forgotPasswordButtonAction:(id)sender {
+    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"confirm mobile"];
+    [self presentViewController:vc animated:YES completion:nil];
+}
 
+- (IBAction)notAUserButtonAction:(id)sender {
+    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"register screen"];
+    [self presentViewController:vc animated:YES completion:nil];
+}
 @end

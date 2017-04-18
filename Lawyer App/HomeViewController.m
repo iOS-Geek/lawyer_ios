@@ -13,11 +13,18 @@
 #import "AppDelegate.h"
 #import "RequestManager.h"
 #import "FSCalendar.h"
+#import "CaseListViewController.h"
+#import "CaseStatusSearchViewController.h"
 @interface HomeViewController ()
 {
     //NSMutableDictionary * infoToPass;
     NSMutableDictionary *myDict;
     NSMutableDictionary *caseInfo;
+    NSArray *dataArray;
+    NSString *stringFromDate;
+   // int i;
+    NSMutableArray *caseIdArray;
+    
 }
 @property (weak, nonatomic) IBOutlet UIView *addButtonView;
 @property (strong, nonatomic) IBOutlet FSCalendar *calendarView;
@@ -31,18 +38,17 @@
        self.navigationController.navigationBar.hidden = YES;
     
      //_addButtonView.layer.cornerRadius = 45;
-      _addButtonView.layer.cornerRadius = self.addButtonView.frame.size.width/2;
+        _addButtonView.layer.cornerRadius = self.addButtonView.frame.size.width/2;
         _addButtonView.clipsToBounds = YES;
     
-    [_sidebarButton addTarget:self.revealViewController action:@selector(revealToggle:)
+          [_sidebarButton addTarget:self.revealViewController action:@selector(revealToggle:)
          forControlEvents:UIControlEventTouchUpInside];
-     [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
-
-    NSLog(@"my add case info - %@",_caseInfoToRecive);
+          [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
+         //NSLog(@"my add case info - %@",_caseInfoToRecive);
     
+        // caseIdArray = [[NSArray alloc]init];
     
-    
-    
+//      myDict = [[NSMutableDictionary alloc]init];
     
     
 //calendar properties
@@ -87,7 +93,9 @@
     
 }
 
-
+-(IBAction)unwindToHomeScreen:(UIStoryboardSegue*)segue{
+    
+}
 -(UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleDefaultColorForDate:(NSDate *)date{
     return [UIColor whiteColor];
 }
@@ -96,11 +104,11 @@
     // Dispose of any resources that can be recreated.
 
 }
-
-
--(BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
+-(void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
+   
     myDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"] ,@"user_id",[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_security_hash"],@"user_security_hash",[self getStringFromDate:date],@"case_detail_hearing_date", nil];
     
+    NSLog(@"my Dict - %@",myDict);
     NSLog(@"%@",[self getStringFromDate:date]);
     [RequestManager getFromServer:@"get_user_cases" parameters:myDict completionHandler:^(NSDictionary *responseDict) {
         
@@ -115,19 +123,45 @@
             }
             
             if ([[responseDict valueForKey:@"code"] isEqualToString:@"1"]){
-                [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+            // [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+                if([[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_groups_id"] isEqualToString:@"3"]){
                 NSLog(@"case list - %@",responseDict);
-                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
+                dataArray = [responseDict valueForKey:@"data"];
                 
-                caseInfo =[NSMutableDictionary dictionaryWithObjectsAndKeys:[dataDict valueForKey:@"user_id"],@"user_id",[dataDict  valueForKey:@"user_security_hash"],@"user_security_hash",[dataDict valueForKey:@"case_title"],@"case_title",[dataDict valueForKey:@"case_next_date"],@"case_next_date", nil];
-                    NSLog(@" case info - %@",caseInfo);
+                stringFromDate =[NSString stringWithFormat:@"%@", [self getStringFromDate:date]];
+                NSLog(@"calender date - %@",stringFromDate);
+               
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                CaseListViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"addedCaseList"];
+                vc.userCaseInfo =dataArray;
+                vc.stringToPass = stringFromDate;
+                [self.navigationController pushViewController:vc animated:YES];
                 
+                }
+                else  if([[[NSUserDefaults standardUserDefaults]stringForKey:@"logged_groups_id"] isEqualToString:@"4"]){
+                    
+                    dataArray = [responseDict valueForKey:@"data"];
+                    
+                    
+                    NSLog(@"case id - %@", [[NSUserDefaults standardUserDefaults]stringForKey:@"logged_case_id"]);
+                    stringFromDate =[NSString stringWithFormat:@"%@", [self getStringFromDate:date]];
+                    NSLog(@"calender date - %@",stringFromDate);
+                    
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    CaseStatusSearchViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"case status screen"];
+                    vc.userInfo =dataArray;
+                    vc.stringToAdd = stringFromDate;
+                    [self.navigationController pushViewController:vc animated:YES];
+                    
+
+                }
             }
         }
     }]; // case list api ends
-    return true;
 }
-
+-(BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
+        return true;
+}
 //convert date to string
 -(NSString*)getStringFromDate:(NSDate*)date{
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
@@ -150,5 +184,10 @@
     }];
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
+}
+- (IBAction)addCaseButtonAction:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"addCaseScreen"];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 @end

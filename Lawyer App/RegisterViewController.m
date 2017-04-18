@@ -147,11 +147,11 @@
     return YES;
 }
 - (IBAction)registorButtonAction:(id)sender {
-    [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_userNameTextField.text forKey:@"user_name"];
-    [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_emailTextField.text forKey:@"user_email"];
-    [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_mobileNumberTextField.text forKey:@"user_contact"];
-    [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_passwordTextField.text forKey:@"user_login_password"];
-    [  dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_confirmPasswordtextField.text forKey:@"confirm_login_password"];
+    [ dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_userNameTextField.text forKey:@"user_name"];
+    [ dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_emailTextField.text forKey:@"user_email"];
+    [ dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_mobileNumberTextField.text forKey:@"user_contact"];
+    [ dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_passwordTextField.text forKey:@"user_login_password"];
+    [ dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword setObject:_confirmPasswordtextField.text forKey:@"confirm_login_password"];
     
     [_userInfo addEntriesFromDictionary: dictWithNameAndUserMobileNumberAndEmailAndPasswordAndConfirmPassword];
     
@@ -170,7 +170,7 @@
             }
             
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
-                //                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+//              [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
                 NSLog(@" signup status %@", responseDict);
                 
                 NSDictionary *dataDict = [responseDict valueForKey:@"data"];

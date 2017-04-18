@@ -10,7 +10,15 @@
 
 @interface AddCommentViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *nextDateTextField;
-@property (weak, nonatomic) IBOutlet UITextField *addCommentTextField;
+@property (weak, nonatomic) IBOutlet UITextView *addCommentTextView;
+
 
 - (IBAction)addCommentButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIView *nextDateView;
+@property (weak, nonatomic) IBOutlet UIView *addCommentView;
+
+- (IBAction)backButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *addCommentTextViewHeightConst;
+
+
 @end

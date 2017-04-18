@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+static NSString *kDescriptionPlaceHolder = @"Comments";
 @interface AddCaseViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -20,9 +20,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *previousDateTextField;
 @property (weak, nonatomic) IBOutlet UITextField *caseTitleTextField;
 @property (weak, nonatomic) IBOutlet UITextField *caseTypeTextField;
+
 @property (weak, nonatomic) IBOutlet UITextField *popUpCaseTypeTextField;
 
-@property (weak, nonatomic) IBOutlet UITextField *caseAmountTextField;
+
 @property (weak, nonatomic) IBOutlet UITextField *judgeNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *caseNumberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *caseStatusTextField;
@@ -37,6 +38,7 @@
 - (IBAction)addCaseButtonAction:(id)sender;
 
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *startDateHeightConst;
 
 
 @property (weak, nonatomic) IBOutlet UIView *startDateView;
@@ -51,7 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIView *oppositeCounselView;
 @property (weak, nonatomic) IBOutlet UIView *oppositeCounselMobileNumberView;
 @property (weak, nonatomic) IBOutlet UIView *commentView;
-@property (weak, nonatomic) IBOutlet UIView *amountView;
+
 @property (weak, nonatomic) IBOutlet UIView *popUpCaseTypeView;
 
 
@@ -59,6 +61,7 @@
 
 
 - (IBAction)backButtonAction:(id)sender;
+
 
 
 

@@ -13,4 +13,15 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
+
+- (IBAction)popUpViewButtonAction:(id)sender;
+
+
+
+
+
+//@property (weak, nonatomic) IBOutlet UIView *popUpView;
+//- (IBAction)callButtonAction:(id)sender;
+//- (IBAction)mailButtonAction:(id)sender;
+//- (IBAction)cancelButtonAction:(id)sender;
 @end

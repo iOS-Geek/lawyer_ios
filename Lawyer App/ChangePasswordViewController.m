@@ -17,8 +17,7 @@
     NSMutableDictionary *dictWithUserNewPasswordAndConfirmPassword;
     NSMutableDictionary *responseMessageDict;
     NSMutableDictionary *myDict;
-    NSMutableString *str1;
-    NSMutableString *str2;
+   
     
    
 }
@@ -31,14 +30,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    NSLog(@"%@", _infoToPass);
+    //NSLog(@"%@", _infoToPass);
     self.navigationController.navigationBar.hidden = YES;
     
     _changedPasswordTextField.delegate = self;
     _confirmPasswordTextField.delegate = self;
     
-    str1 = [[NSMutableString alloc]init];
-    str2 = [[NSMutableString alloc]init];
+    
 
     
     [_changedPasswordTextField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
@@ -99,16 +97,13 @@
 
 - (IBAction)submitButtonAction:(id)sender {
     
-//    str1 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_id"]];
-//    str2 =[NSMutableString stringWithFormat:@"%@", [_infoToPass objectForKey:@"user_security_hash"]];
-
-
     [dictWithUserNewPasswordAndConfirmPassword setObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_id"] forKey:@"user_id"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:[[NSUserDefaults standardUserDefaults] stringForKey:@"logged_user_security_hash"] forKey:@"user_security_hash"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_changedPasswordTextField.text forKey:@"user_login_password"];
     [dictWithUserNewPasswordAndConfirmPassword setObject:_confirmPasswordTextField.text forKey:@"confirm_login_password"];
    
     [myDict addEntriesFromDictionary:dictWithUserNewPasswordAndConfirmPassword];
+    NSLog(@" change password - %@",myDict);
     [RequestManager getFromServer:@"change_password" parameters:myDict completionHandler:^(NSDictionary *responseDict) {
               if ([[responseDict valueForKey:@"error"] isEqualToString:@"1"]) {
             [self showBasicAlert:@"No Network Availbale!!!" Message:@"Please connect to a working internet."];
@@ -127,7 +122,12 @@
                 
                 [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
                 
-               // [self performSegueWithIdentifier:@"passwordUpdated" sender:self];
+               
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"homeScreen"];
+                [self.revealViewController setFrontViewController:vc];
+                [self.revealViewController revealToggleAnimated:true];
+
             }
         }
     }];//change password api ends
@@ -143,8 +143,4 @@
     [alert addAction:okAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
-
-
-
-
 @end
