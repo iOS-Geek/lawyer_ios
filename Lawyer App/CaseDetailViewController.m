@@ -36,6 +36,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
+    
     NSLog(@"case id %@",_caseidget);
     showoffline = NO;
     saveRootBoolValue = [[NSUserDefaults standardUserDefaults]boolForKey:@"titleshow"];
@@ -47,7 +50,7 @@
     dicty = [[NSMutableDictionary alloc]init];
     dicty = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults]dictionaryForKey:@"saveData1"]];
     
-    // Alert View
+    // Alert Action
     _mainScrollView.hidden=YES;
     dictToShowCaseDetail = [[NSDictionary alloc]init];
     
