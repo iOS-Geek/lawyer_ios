@@ -60,19 +60,26 @@
 
 # pragma scroll view delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-   
-   // dragable view as scroll indicator
-   if (scrollView.contentOffset.x == 0) {
-        _dragableView.frame = CGRectMake(_dragableView.bounds.origin.x+21
-                                         - scrollView.contentOffset.x/2, 89, 120, 2);
+    // to change the position of dragable view
+    if (_scrollView.contentOffset.x == 0) {
+        [UIView animateWithDuration:0.25 animations:^{
+            _dragableView.frame = CGRectMake(_individualUserButton.frame.origin.x, _individualUserButton.frame.origin.y + _individualUserButton.frame.size.height , _individualUserButton.frame.size.width, 2);
+        }];
+        
     }else{
-        _dragableView.frame = CGRectMake(_dragableView.bounds.origin.x+21
-                                         + scrollView.contentOffset.x/2, 89, 120, 2);
+        if (_dragableView.frame.origin.x==_businessUserButton.frame.origin.x)
+        {
+            
+        }
+        else
+        {
+            [UIView animateWithDuration:0.25 animations:^{
+                _dragableView.frame = CGRectMake(_businessUserButton.frame.origin.x, _businessUserButton.frame.origin.y + _businessUserButton.frame.size.height , _businessUserButton.frame.size.width, 2);
+            }];
+        }
     }
-    scrollDirectionDetermined = YES;
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    scrollDirectionDetermined = NO;
+    
+    
 }
 -(void)dismissKeyboard {
 
