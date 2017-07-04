@@ -58,34 +58,52 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)confirmButtonAction:(id)sender {
-     [mobileNumber setObject:_mobileNumberTextField.text forKey:@"user_contact"];
+    [mobileNumber setObject:_mobileNumberTextField.text forKey:@"user_contact"];
     [_userInfo addEntriesFromDictionary: mobileNumber];
+    
+    // Activity Indicator To Show Loading
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc]
+                                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    activityView.center=self.view.center;
+    [activityView startAnimating];
+    [self.view addSubview:activityView];
+    
+    // Forgot Password Api Start
     [RequestManager getFromServer:@"forgot_password" parameters:_userInfo completionHandler:^(NSDictionary *responseDict) {
         
         if ([[responseDict valueForKey:@"error"] isEqualToString:@"1"]) {
             [self showBasicAlert:@"No Network Availbale!!!" Message:@"Please connect to a working internet."];
+            [activityView stopAnimating];
             return ;
         }
         else{
+            if ([[responseDict objectForKey:@"code"] isEqualToString:@"-1"]) {
+                [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+                [activityView stopAnimating];
+                return;
+            }
+            
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"0"]) {
                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
+                [activityView stopAnimating];
                 return;
             }
             
             if ([[responseDict objectForKey:@"code"] isEqualToString:@"1"]) {
-//                 [self showBasicAlert:[responseDict objectForKey:@"message"] Message:@""];
-                NSLog(@" forget password status %@",responseDict);
                 
-//                NSDictionary *dataDict = [responseDict valueForKey:@"data"];
-//                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_id"] forKey:@"logged_user_id"];
-//                [[NSUserDefaults standardUserDefaults]setObject:[dataDict valueForKey:@"user_security_hash"] forKey:@"logged_user_security_hash"];
+                NSLog(@" forget password status %@",responseDict);
+                [[NSUserDefaults standardUserDefaults]setObject:[responseDict objectForKey:@"message"] forKey:@"user_password"];
+                NSLog(@" message %@",[[NSUserDefaults standardUserDefaults] stringForKey:@"user_password"]);
+                
                 
                 [self performSegueWithIdentifier:@"login screen" sender:self];
+                
             }
         }
-    }]; //forgot password api ends
+        [activityView stopAnimating];
+    }]; //forgot password api ends}
 }
-
 - (IBAction)backButtonAction:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

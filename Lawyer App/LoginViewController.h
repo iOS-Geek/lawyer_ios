@@ -37,4 +37,7 @@
 
 - (IBAction)forgotPasswordButtonAction:(id)sender;
 - (IBAction)notAUserButtonAction:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIButton *individualUserButton;
+@property (weak, nonatomic) IBOutlet UIButton *businessUserButton;
 @end
